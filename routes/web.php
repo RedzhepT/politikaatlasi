@@ -8,7 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use Illuminate\Support\Facades\Auth;
 
-// Ana sayfa
+// Ana sayfa - herkes erişebilir
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Makale route'ları
@@ -26,6 +26,15 @@ Route::get('/iletisim', [PageController::class, 'contact'])->name('contact');
 // İletişim formu
 Route::post('/iletisim', [PageController::class, 'sendMessage'])->name('contact.send');
 
+// Auth Routes - sadece giriş yapmamış kullanıcılar erişebilir
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+});
+
+// Çıkış yapma route'u - sadece giriş yapmış kullanıcılar
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
 // Admin routes
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
     ->prefix('admin')
@@ -38,11 +47,4 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::post('upload/image', [App\Http\Controllers\Admin\UploadController::class, 'uploadImage'])->name('upload.image');
     });
 
-// Auth Routes
-Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
-Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

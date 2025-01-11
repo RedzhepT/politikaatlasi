@@ -9,6 +9,11 @@
                 <li><a href="{{ route('about') }}">Hakkımızda</a></li>
                 <li><a href="{{ route('articles.index') }}">Blog</a></li>
                 <li><a href="{{ route('contact') }}">İletişim</a></li>
+                @auth
+                    @if(auth()->user()->is_admin)
+                        <li><a href="{{ route('admin.dashboard') }}" class="btn-admin"><i class="bi bi-speedometer2"></i> Admin Panel</a></li>
+                    @endif
+                @endauth
             </ul>
         </nav>
 

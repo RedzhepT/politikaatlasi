@@ -169,14 +169,22 @@
                     <i class="bi bi-list"></i>
                 </button>
                 
-                <div class="ms-auto">
+                <div class="ms-auto d-flex align-items-center">
+                    <a href="{{ route('home') }}" class="btn btn-outline-primary me-3">
+                        <i class="bi bi-house-door"></i> Siteye Dön
+                    </a>
                     <div class="dropdown">
                         <button class="btn btn-link dropdown-toggle text-dark" type="button" id="userDropdown" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Profil</a></li>
-                            <li><a class="dropdown-item" href="#">Çıkış</a></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Çıkış Yap</button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>
