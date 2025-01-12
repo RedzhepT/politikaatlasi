@@ -7,6 +7,12 @@
             <div class="card shadow-sm">
                 <div class="card-header">Giriş Yap</div>
 
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -46,6 +52,13 @@
                             </button>
                         </div>
                     </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-2">Henüz hesabınız yok mu?</p>
+                        <a href="{{ route('register') }}" class="btn btn-outline-primary">
+                            Hesap Oluştur
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

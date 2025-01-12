@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CommentController;
 
 // Ana sayfa - herkes erişebilir
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -48,3 +49,5 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
     });
 
 Auth::routes();
+
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');

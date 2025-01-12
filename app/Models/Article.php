@@ -15,4 +15,9 @@ class Article extends Model
         'author_name',
         'author_image'
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->where('is_approved', true);
+    }
 } 

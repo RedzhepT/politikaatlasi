@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -26,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected string $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -38,16 +39,20 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        if ($request->has('redirect')) {
+            session()->put('url.intended', $request->redirect);
+        }
         return view('auth.login');
     }
 
-    public function authenticated($request, $user)
+    protected function authenticated(Request $request, $user)
     {
-        if($user->is_admin) {
+        if ($user->is_admin) {
             return redirect()->route('admin.dashboard');
         }
-        return redirect('/');
+
+        return redirect()->intended('/');
     }
 }
