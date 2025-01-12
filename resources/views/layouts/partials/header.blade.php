@@ -20,11 +20,35 @@
         <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
         <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
-        @auth
-            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-link">Çıkış Yap</button>
-            </form>
-        @endauth
+        <div class="ms-3 position-relative">
+            @auth
+                <div class="dropdown">
+                    <button class="btn btn-link text-white text-decoration-none p-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i> {{ auth()->user()->name }}
+                    </button>
+                    <ul class="dropdown-menu position-absolute end-0" style="z-index: 1021;">
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <div class="d-flex gap-2">
+                    <a href="{{ route('login') }}" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+                    </a>
+                    <a href="{{ route('register') }}" class="btn btn-light btn-sm">
+                        <i class="bi bi-person-plus"></i> Kayıt Ol
+                    </a>
+                </div>
+            @endauth
+        </div>
     </div>
 </header> 
