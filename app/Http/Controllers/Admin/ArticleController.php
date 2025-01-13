@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ArticleController extends Controller
 {
@@ -21,7 +22,15 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $articles = Article::latest()->paginate(10);
+        $articles = Article::query()
+            ->latest()  // En son eklenenler önce
+            ->when(request('search'), function($query, $search) {
+                $query->where('title', 'like', "%{$search}%")
+                      ->orWhere('author_name', 'like', "%{$search}%");
+            })
+            ->paginate(10)
+            ->withQueryString();  // URL parametrelerini koru
+
         return view('admin.articles.index', compact('articles'));
     }
 

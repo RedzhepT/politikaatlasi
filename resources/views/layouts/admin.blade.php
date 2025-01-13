@@ -118,6 +118,131 @@
                 margin-left: 0;
             }
         }
+
+        /* Pagination Styles */
+        .custom-pagination {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .custom-pagination .pagination {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 0.25rem;
+        }
+
+        .custom-pagination .page-item .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2rem;
+            height: 2rem;
+            padding: 0 0.5rem;
+            font-size: 0.875rem;
+            color: var(--sidebar-bg);
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .custom-pagination .page-item.active .page-link {
+            background-color: var(--sidebar-bg);
+            border-color: var(--sidebar-bg);
+            color: #fff;
+        }
+
+        .custom-pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+        .custom-pagination .page-item .page-link:hover:not(.disabled) {
+            background-color: var(--sidebar-hover);
+            border-color: var(--sidebar-hover);
+            color: #fff;
+        }
+
+        .custom-pagination .page-info {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .custom-pagination .page-link i {
+            font-size: 0.75rem;
+        }
+
+        /* Pagination Component */
+        .admin-pagination {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .admin-pagination .pagination-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .admin-pagination .pagination-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .admin-pagination .page-button {
+            min-width: 2.5rem;
+            height: 2.5rem;
+            padding: 0 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            background: #fff;
+            color: var(--sidebar-bg);
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .admin-pagination .page-button:hover {
+            background: var(--sidebar-hover);
+            color: #fff;
+            border-color: var(--sidebar-hover);
+        }
+
+        .admin-pagination .page-button.active {
+            background: var(--sidebar-bg);
+            color: #fff;
+            border-color: var(--sidebar-bg);
+        }
+
+        .admin-pagination .page-button.disabled {
+            background: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .admin-pagination .page-info {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .admin-pagination .page-button i {
+            font-size: 0.75rem;
+        }
     </style>
     @yield('styles')
 </head>
@@ -165,7 +290,29 @@
         </ul>
     </nav>
 
-    <!-- Page Content -->
+    <!-- Content alanının üstünde -->
+    @section('pagination')
+    <div class="admin-pagination">
+        <div class="pagination-wrapper">
+            <div class="pagination-nav">
+                <a href="#" class="page-button disabled">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <a href="#" class="page-button active">1</a>
+                <a href="#" class="page-button">2</a>
+                <a href="#" class="page-button">3</a>
+                <a href="#" class="page-button">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+            <div class="page-info">
+                1-10 / 20
+            </div>
+        </div>
+    </div>
+    @endsection
+
+    <!-- Content area -->
     <div id="content">
         <!-- Top Navigation -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">

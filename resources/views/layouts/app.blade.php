@@ -29,6 +29,57 @@
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
     @yield('styles')
+
+    <!-- Pagination Styles -->
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pagination .page-item .page-link {
+            min-width: 2.5rem;
+            height: 2.5rem;
+            padding: 0 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: var(--color-primary);
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background: #f8f9fa;
+            color: #6c757d;
+            border-color: #dee2e6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .pagination-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+    </style>
 </head>
 <body>
     <header>

@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="mt-4">
-                        {{ $articles->links() }}
+                        <x-admin-pagination :paginator="$articles" />
                     </div>
                 </div>
             </div>

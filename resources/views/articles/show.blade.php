@@ -48,7 +48,7 @@
                         </ul>
                     </div>
                     <div class="content" itemprop="articleBody">
-                        {!! $article->content !!}
+                        {!! App\Helpers\TextHelper::cleanSpanTags($article->content) !!}
                     </div>
                 </article>
             </div>
@@ -195,10 +195,61 @@
     }
 
     /* Yan menüdeki son yazılar için stiller */
+    .post-item {
+        display: flex;
+        align-items: start;
+        gap: 15px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .post-item:last-child {
+        border-bottom: none;
+    }
+
     .post-item img {
-        max-width: 100px;
-        height: auto;
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
         border-radius: 4px;
+        flex-shrink: 0;
+    }
+
+    .post-item div {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .post-item h3 {
+        font-size: 0.95rem;
+        margin: 0;
+        line-height: 1.4;
+        flex: 1;
+    }
+
+    .post-item time {
+        font-size: 0.8rem;
+        color: #666;
+        display: block;
+        margin-top: 4px;
+    }
+
+    .post-item h3 a {
+        color: var(--color-primary);
+        text-decoration: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+
+    .post-item h3 a:hover {
+        color: var(--color-primary-dark);
     }
 
     /* Breadcrumbs için stiller */
@@ -235,6 +286,21 @@
     .comment p {
         margin-top: 0.5rem;
         color: #333;
+    }
+
+    .post-item h3 {
+        font-size: 0.95rem;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .post-item h3 a {
+        color: var(--color-primary);
+        text-decoration: none;
+    }
+
+    .post-item h3 a:hover {
+        color: var(--color-primary-dark);
     }
 </style>
 @endsection 
