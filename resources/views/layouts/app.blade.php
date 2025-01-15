@@ -79,6 +79,194 @@
             color: #666;
             font-size: 0.875rem;
         }
+
+        /* Dropdown item içindeki ikon ve metin arasındaki boşluğu ayarla */
+        .dropdown-item i {
+            margin-right: 0.5rem;
+            width: 1rem;
+            text-align: center;
+        }
+
+        /* Dropdown item hover efekti */
+        .dropdown-item:hover {
+            background-color: var(--color-primary);
+            color: white !important;
+        }
+
+        /* Çıkış Yap butonu için özel stil */
+        .dropdown-item.text-danger:hover {
+            background-color: #dc3545;
+            color: white !important;
+        }
+
+        /* Dropdown menu pozisyonu ve gölgesi */
+        .dropdown-menu {
+            margin-top: 0.5rem;
+            border: none;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Mobil görünüm için dropdown stilleri */
+        @media (max-width: 991px) {
+            .navbar .mobile-dropdown-menu {
+                display: none;
+                background-color: rgba(255, 255, 255, 0.1);
+                border: none;
+                margin: 0;
+                padding: 0.5rem 0;
+                list-style: none;
+            }
+            
+            .navbar .mobile-dropdown-menu.show {
+                display: block;
+            }
+            
+            .navbar .mobile-dropdown-menu .dropdown-item {
+                color: #fff;
+                padding: 0.5rem 1.5rem;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .navbar .mobile-dropdown-menu .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .mobile-dropdown-toggle {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+                color: #fff;
+                text-decoration: none;
+                position: relative;
+                padding-right: 2rem;
+            }
+
+            .mobile-dropdown-toggle::after {
+                content: "\F282";
+                font-family: "bootstrap-icons";
+                position: absolute;
+                right: 1rem;
+                transition: transform 0.2s ease-in-out;
+            }
+
+            .mobile-dropdown-toggle[aria-expanded="true"]::after {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* Desktop görünüm için dropdown stilleri */
+        @media (min-width: 992px) {
+            .dropdown-menu {
+                background: white;
+            }
+
+            .dropdown-item:hover {
+                background-color: var(--color-primary);
+                color: white;
+            }
+
+            .dropdown-item.text-danger:hover {
+                background-color: #dc3545;
+                color: white !important;
+            }
+        }
+
+        /* Dropdown toggle button'daki fazla padding'i kaldır */
+        .navbar .dropdown .btn-link {
+            padding: 0.5rem !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;  /* İkon ile metin arasında sabit boşluk */
+        }
+
+        /* İkonun genişliğini sabitle */
+        .navbar .dropdown .btn-link i {
+            width: 1rem;
+            text-align: center;
+        }
+
+        /* Mobil menüdeki dropdown için */
+        @media (max-width: 991px) {
+            .navbar .dropdown-menu {
+                background-color: rgba(255, 255, 255, 0.1);
+                margin: 0;
+                padding: 0.5rem 0;
+            }
+            
+            .navbar .dropdown-item {
+                color: #fff;
+                padding: 0.5rem 1.5rem;
+            }
+            
+            .navbar .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        /* Dropdown temel stilleri */
+        .dropdown-toggle::after {
+            content: "\F282" !important;  /* Bootstrap Icons chevron-down */
+            font-family: "bootstrap-icons" !important;
+            border: none !important;  /* Varsayılan border oku kaldır */
+            vertical-align: middle;
+            margin-left: 0.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        /* Dropdown açıkken ok yukarı dönsün */
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            margin-top: 0.5rem !important;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Desktop dropdown için */
+        @media (min-width: 992px) {
+            .user-menu .dropdown-menu {
+                background: white;
+                min-width: 200px;
+                right: 0;
+                left: auto;
+            }
+
+            .dropdown-toggle {
+                display: flex;
+                align-items: center;
+            }
+
+            .dropdown-item {
+                padding: 0.5rem 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .dropdown-item:hover {
+                background-color: var(--color-primary);
+                color: white;
+            }
+
+            .dropdown-item.text-danger:hover {
+                background-color: #dc3545;
+                color: white !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -94,11 +282,12 @@
         @include('layouts.partials.footer')
     </footer>
 
-    <!-- Bootstrap JS with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    
-    <!-- Other Vendor JS Files -->
+    <!-- Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+        crossorigin="anonymous"></script>
+
+    <!-- Vendor JS Files -->
     <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
     <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
@@ -111,44 +300,11 @@
 
     <script>
         // Initialize AOS
-        AOS.init();
-        
-        // Initialize GLightbox
-        const lightbox = GLightbox({
-            selector: '.glightbox'
-        });
-
-        // Test Bootstrap Dropdown
-        document.addEventListener('DOMContentLoaded', function() {
-            // Test if Bootstrap is loaded
-            if (typeof bootstrap === 'undefined') {
-                console.error('Bootstrap is not loaded!');
-                return;
-            }
-
-            // console.log('Bootstrap version:', bootstrap.Dropdown.VERSION);
-
-            // Get dropdown button
-            const dropdownBtn = document.querySelector('.dropdown-toggle');
-            if (!dropdownBtn) {
-                console.error('Dropdown button not found!');
-                return;
-            }
-
-            // Create dropdown instance
-            try {
-                const dropdown = new bootstrap.Dropdown(dropdownBtn);
-                // console.log('Dropdown instance created successfully');
-
-                // Add click event listener
-                dropdownBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // console.log('Dropdown button clicked');
-                    dropdown.toggle();
-                });
-            } catch (error) {
-                console.error('Error creating dropdown:', error);
-            }
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
         });
     </script>
 </body>
