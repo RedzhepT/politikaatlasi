@@ -7,6 +7,8 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Category;
 
 class ArticleController extends Controller
 {
@@ -98,27 +100,30 @@ class ArticleController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $article->title = $this->cleanTitle($validated['title']);
-        $article->content = $validated['content'];
-        $article->author_name = $validated['author'];
-        $article->category = $validated['category'];
-        $article->slug = Str::slug($validated['title']);
-        $article->is_published = $request->input('is_published') ? true : false;
-
-        // Görsel yükleme
+        // Görsel işleme
         if ($request->hasFile('image')) {
             // Eski görseli sil
             if ($article->image && file_exists(public_path($article->image))) {
                 unlink(public_path($article->image));
             }
-
-            $image = $request->file('image');
-            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/articles'), $imageName);
-            $article->image = 'uploads/articles/' . $imageName;
+            $imagePath = $this->handleImageUpload($request);
+            $article->image = $imagePath;
         }
 
-        $article->save();
+        // Kategori işleme
+        $category = Category::firstOrCreate(
+            ['name' => $validated['category']],
+            ['description' => $validated['category'] . ' kategorisindeki makaleler']
+        );
+
+        // Article güncelleme
+        $article->update([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'author_name' => $validated['author'],
+            'slug' => Str::slug($validated['title']),
+            'category_id' => $category->id
+        ]);
 
         return redirect()->route('admin.articles.index')
             ->with('success', 'Makale başarıyla güncellendi.');

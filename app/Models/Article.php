@@ -8,13 +8,11 @@ class Article extends Model
 {
     protected $fillable = [
         'title',
-        'slug',
         'content',
-        'image',
-        'category',
+        'slug',
         'author_name',
-        'author_image',
-        'views'
+        'image',
+        'is_published'
     ];
 
     public function comments()

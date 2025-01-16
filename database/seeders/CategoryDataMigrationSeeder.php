@@ -18,11 +18,10 @@ class CategoryDataMigrationSeeder extends Seeder
         foreach ($existingCategories as $categoryName) {
             if (!$categoryName) continue;
             
-            $category = Category::create([
-                'name' => $categoryName,
-                'slug' => Str::slug($categoryName),
-                'description' => $categoryName . ' kategorisindeki makaleler'
-            ]);
+            $category = Category::firstOrCreate(
+                ['name' => $categoryName],
+                ['description' => $categoryName . ' kategorisindeki makaleler']
+            );
             
             // Bu kategorideki makaleleri güncelle
             Article::where('old_category', $categoryName)
