@@ -1,4 +1,4 @@
-<header id="header" class="header d-flex align-items-center">
+<header id="header" class="header fixed-top d-flex align-items-center">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
         <a href="{{ route('home') }}" class="logo d-flex align-items-center">
             <h1>PolitikaAtlası</h1>
@@ -94,3 +94,20 @@
         <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
     </div>
 </header> 
+
+<style>
+.header.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Search section için offset */
+.search-section {
+    padding: 0.5rem 0;
+    margin-top: 72px; /* Header yüksekliği */
+}
+</style> 

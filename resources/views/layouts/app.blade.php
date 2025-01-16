@@ -116,53 +116,52 @@
 
         /* Mobil görünüm için dropdown stilleri */
         @media (max-width: 991px) {
-            .navbar .mobile-dropdown-menu {
-                display: none;
-                background-color: rgba(255, 255, 255, 0.1);
-                border: none;
-                margin: 0;
-                padding: 0.5rem 0;
-                list-style: none;
-            }
-            
-            .navbar .mobile-dropdown-menu.show {
+            .navbar {
+                position: fixed;
+                top: 72px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 72px);
+                background: var(--color-primary);
+                transition: 0.3s;
+                overflow-y: auto;
+                padding: 1rem 0;
+                z-index: 9997;
                 display: block;
             }
-            
-            .navbar .mobile-dropdown-menu .dropdown-item {
-                color: #fff;
+
+            .navbar ul {
+                display: block;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+
+            .navbar ul li {
                 padding: 0.5rem 1.5rem;
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            
-            .navbar .mobile-dropdown-menu .dropdown-item:hover {
-                background-color: rgba(255, 255, 255, 0.2);
+                width: 100%;
             }
 
-            .mobile-dropdown-toggle {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                padding: 0.5rem 1rem;
+            .navbar ul li a {
+                display: block;
+                width: 100%;
+                font-size: 16px;
                 color: #fff;
-                text-decoration: none;
-                position: relative;
-                padding-right: 2rem;
+                padding: 0.75rem 0;
             }
 
-            .mobile-dropdown-toggle::after {
-                content: "\F282";
-                font-family: "bootstrap-icons";
-                position: absolute;
-                right: 1rem;
-                transition: transform 0.2s ease-in-out;
+            /* Dropdown menü için düzenlemeler */
+            .navbar .mobile-dropdown-menu {
+                position: static;
+                display: none;
+                padding: 0.5rem 0 0.5rem 1.5rem;
+                margin: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.1);
             }
 
-            .mobile-dropdown-toggle[aria-expanded="true"]::after {
-                transform: rotate(180deg);
+            .navbar .mobile-dropdown-menu.show {
+                display: block;
             }
         }
 
@@ -212,6 +211,26 @@
             
             .navbar .dropdown-item:hover {
                 background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            /* Mobil dropdown ok işareti için */
+            .mobile-dropdown-toggle {
+                position: relative;
+                padding-right: 2rem !important;
+            }
+
+            .mobile-dropdown-toggle::after {
+                content: "\F282";
+                font-family: "bootstrap-icons";
+                position: absolute;
+                right: 0.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: transform 0.2s ease-in-out;
+            }
+
+            .mobile-dropdown-toggle[aria-expanded="true"]::after {
+                transform: translateY(-50%) rotate(180deg);
             }
         }
 
@@ -267,20 +286,58 @@
                 color: white !important;
             }
         }
+
+        .back-to-top {
+            position: fixed;
+            visibility: hidden;
+            opacity: 0;
+            right: 15px;
+            bottom: 15px;
+            z-index: 99999;
+            background: #2c4964;  /* Koyu mavi ton */
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            transition: all 0.4s;
+            text-decoration: none;
+        }
+
+        .back-to-top i {
+            font-size: 24px;
+            color: #fff;
+            line-height: 0;
+        }
+
+        .back-to-top:hover {
+            background: #3e5f8a;  /* Hover durumu için biraz daha açık ton */
+            color: #fff;
+            transform: translateY(-3px);  /* Hover'da hafif yukarı kalkma efekti */
+            box-shadow: 0 4px 12px rgba(44, 73, 100, 0.15);  /* Hover'da gölge efekti */
+        }
+
+        .back-to-top.active {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
-    <header>
-        @include('layouts.partials.header')
-    </header>
-
-    <main>
+    @include('layouts.partials.header')
+    
+    @include('layouts.partials.search')
+    
+    <main id="main">
         @yield('content')
     </main>
 
     <footer>
         @include('layouts.partials.footer')
     </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
 
     <!-- Bootstrap Bundle (includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
@@ -306,6 +363,56 @@
             once: true,
             mirror: false
         });
+
+        // Scroll to show/hide header
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        const headerHeight = header.offsetHeight;
+        let isScrolling;
+
+        window.addEventListener('scroll', function() {
+            clearTimeout(isScrolling);
+
+            isScrolling = setTimeout(function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                // Scroll aşağı
+                if (scrollTop > lastScrollTop && scrollTop > headerHeight) {
+                    header.style.transform = 'translateY(-100%)';
+                    header.style.transition = 'transform 0.3s ease-in-out';
+                } 
+                // Scroll yukarı
+                else {
+                    header.style.transform = 'translateY(0)';
+                    header.style.transition = 'transform 0.3s ease-in-out';
+                }
+
+                lastScrollTop = scrollTop;
+            }, 10);
+        });
+
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        if (backToTop) {
+            const toggleBacktotop = () => {
+                if (window.scrollY > 100) {
+                    backToTop.classList.add('active');
+                } else {
+                    backToTop.classList.remove('active');
+                }
+            };
+
+            window.addEventListener('load', toggleBacktotop);
+            window.addEventListener('scroll', toggleBacktotop);
+
+            backToTop.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
     </script>
 </body>
 </html> 

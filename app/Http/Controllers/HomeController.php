@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -15,15 +16,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $articles = Article::query()
+        $articles = Article::with('category')
             ->where('is_published', true)
             ->latest()
-            ->paginate(6)
-            ->through(function ($article) {
-                $article->excerpt = Str::words(strip_tags($article->content), 10);
-                return $article;
-            });
+            ->take(6)
+            ->get();
 
-        return view('home', compact('articles'));
+        $categories = Category::withCount('articles')
+            ->orderByDesc('articles_count')
+            ->take(6)
+            ->get();
+
+        $stats = [
+            'articleCount' => Article::count(),
+            'categoryCount' => Category::count(),
+            'authorCount' => User::count(),
+            'viewCount' => Article::sum('views') ?? 0
+        ];
+
+        return view('home', compact('articles', 'categories'))->with($stats);
     }
 }
