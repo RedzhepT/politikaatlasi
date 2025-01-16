@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Hero Section -->
 <div class="breadcrumbs">
     <div class="page-header d-flex align-items-center">
         <div class="container position-relative">
@@ -11,26 +12,33 @@
             </div>
         </div>
     </div>
-    <nav>
-        <div class="container">
-            <ol>
-                <li><a href="{{ route('home') }}">Anasayfa</a></li>
-                <li><a href="{{ route('articles.index') }}">Blog</a></li>
-                <li>{{ $article->title }}</li>
-            </ol>
-        </div>
-    </nav>
 </div>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb-nav">
+    <div class="container">
+        <ol>
+            <li><a href="{{ route('home') }}">Anasayfa</a></li>
+            <li><a href="{{ route('articles.index') }}">Blog</a></li>
+            <li>{{ $article->title }}</li>
+        </ol>
+    </div>
+</div>
+
+<!-- Article Content -->
 <section id="blog" class="blog">
     <div class="container" data-aos="fade-up">
         <div class="row g-5">
             <div class="col-lg-8">
-                <article class="blog-details" itemscope itemtype="http://schema.org/Article">
+                <article class="blog-details">
+                    @if($article->image)
                     <div class="post-img">
-                        <img src="{{ asset($article->image) }}" alt="{{ $article->title }}" class="img-fluid">
+                        <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="img-fluid">
                     </div>
+                    @endif
+
                     <h2 class="title">{{ $article->title }}</h2>
+
                     <div class="meta-top">
                         <ul>
                             <li class="d-flex align-items-center">
@@ -42,34 +50,20 @@
                                 <a href="#"><time datetime="{{ $article->created_at }}">{{ $article->created_at->format('d M Y') }}</time></a>
                             </li>
                             <li class="d-flex align-items-center">
-                                <i class="bi bi-folder"></i>
-                                <a href="#">{{ $article->category }}</a>
+                                <i class="bi bi-eye"></i>
+                                <a href="#">{{ $article->views }} Görüntülenme</a>
                             </li>
                         </ul>
                     </div>
-                    <div class="content" itemprop="articleBody">
-                        {!! App\Helpers\TextHelper::cleanSpanTags($article->content) !!}
+
+                    <div class="content">
+                        {!! $article->content !!}
                     </div>
                 </article>
             </div>
 
             <div class="col-lg-4">
-                <div class="sidebar">
-                    <div class="sidebar-item recent-posts">
-                        <h3 class="sidebar-title">Son Yazılar</h3>
-                        <div class="mt-3">
-                            @foreach($recentArticles as $recentArticle)
-                            <div class="post-item mt-3">
-                                <img src="{{ asset($recentArticle->image) }}" alt="{{ $recentArticle->title }}" class="flex-shrink-0">
-                                <div>
-                                    <h3><a href="{{ route('articles.show', $recentArticle->slug) }}">{{ $recentArticle->title }}</a></h3>
-                                    <time datetime="{{ $recentArticle->created_at }}">{{ $recentArticle->created_at->format('d M Y') }}</time>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
+                @include('articles.partials.sidebar')
             </div>
         </div>
 
@@ -144,9 +138,77 @@
         color: white !important;
     }
 
+    /* Hero Section için stiller */
+    .breadcrumbs {
+        padding: 140px 0 60px 0;
+        min-height: 30vh;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: var(--color-primary);
+        color: #fff;
+    }
+
+    .breadcrumbs .page-header {
+        padding: 0;
+    }
+
+    .breadcrumbs .page-header h1 {
+        font-size: 56px;
+        font-weight: 500;
+        color: #fff;
+        font-family: var(--font-primary);
+    }
+
+    /* Breadcrumb Navigation için stiller */
+    .breadcrumb-nav {
+        padding: 20px 0;
+        background: #f6f6f6;
+    }
+
+    .breadcrumb-nav ol {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .breadcrumb-nav ol li {
+        display: flex;
+        align-items: center;
+    }
+
+    .breadcrumb-nav ol li + li {
+        padding-left: 10px;
+    }
+
+    .breadcrumb-nav ol li + li::before {
+        display: inline-block;
+        padding-right: 10px;
+        color: #6c757d;
+        content: "/";
+    }
+
+    .breadcrumb-nav ol li a {
+        color: #6c757d;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .breadcrumb-nav ol li a:hover {
+        color: var(--color-primary);
+    }
+
+    .breadcrumb-nav ol li:last-child {
+        color: #999;
+    }
+
     /* İçerik için padding */
-    main {
-        padding-top: 90px;
+    .blog {
+        padding: 40px 0;
     }
 
     /* Ana makale görseli için stiller */
@@ -177,84 +239,6 @@
         margin: 15px 0;
         padding: 0;
         max-width: 100%;
-    }
-
-    .blog-details .content figure img {
-        width: 100%;
-        height: auto;
-        margin: 0 auto;
-        display: block;
-        border-radius: 4px;
-    }
-
-    .blog-details .content figure figcaption {
-        text-align: center;
-        font-size: 14px;
-        color: #666;
-        margin-top: 8px;
-    }
-
-    /* Yan menüdeki son yazılar için stiller */
-    .post-item {
-        display: flex;
-        align-items: start;
-        gap: 15px;
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
-    }
-
-    .post-item:last-child {
-        border-bottom: none;
-    }
-
-    .post-item img {
-        width: 80px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 4px;
-        flex-shrink: 0;
-    }
-
-    .post-item div {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .post-item h3 {
-        font-size: 0.95rem;
-        margin: 0;
-        line-height: 1.4;
-        flex: 1;
-    }
-
-    .post-item time {
-        font-size: 0.8rem;
-        color: #666;
-        display: block;
-        margin-top: 4px;
-    }
-
-    .post-item h3 a {
-        color: var(--color-primary);
-        text-decoration: none;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-    }
-
-    .post-item h3 a:hover {
-        color: var(--color-primary-dark);
-    }
-
-    /* Breadcrumbs için stiller */
-    .breadcrumbs {
-        margin-top: 70px;
     }
 
     /* Yorum bölümü için stiller */
@@ -288,19 +272,15 @@
         color: #333;
     }
 
-    .post-item h3 {
-        font-size: 0.95rem;
-        margin: 0;
-        line-height: 1.4;
-    }
+    /* Responsive düzenlemeler */
+    @media (max-width: 768px) {
+        .breadcrumbs {
+            padding: 120px 0 40px 0;
+        }
 
-    .post-item h3 a {
-        color: var(--color-primary);
-        text-decoration: none;
-    }
-
-    .post-item h3 a:hover {
-        color: var(--color-primary-dark);
+        .breadcrumbs .page-header h1 {
+            font-size: 36px;
+        }
     }
 </style>
 @endsection 

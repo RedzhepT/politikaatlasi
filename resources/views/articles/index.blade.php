@@ -7,7 +7,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-6 text-center">
                     <h1>Blog</h1>
-                    <p>Güncel siyasi analizler ve değerlendirmeler</p>
+                    <p>Siyasi analizler ve değerlendirmeler</p>
                 </div>
             </div>
         </div>
@@ -31,7 +31,9 @@
                     <div class="post-img">
                         <img src="{{ asset($article->image) }}" alt="" class="img-fluid">
                     </div>
-                    <p class="post-category">{{ $article->category }}</p>
+                    @if($article->category)
+                        <p class="post-category">{{ $article->category->name }}</p>
+                    @endif
                     <h2 class="title">
                         <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
                     </h2>

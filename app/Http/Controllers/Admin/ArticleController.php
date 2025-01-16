@@ -20,6 +20,22 @@ class ArticleController extends Controller
         return trim($cleanTitle);
     }
 
+    private function handleImageUpload($request)
+    {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $path = 'uploads/articles/' . $filename;
+            
+            // Resmi public/uploads/articles dizinine kaydet
+            $image->move(public_path('uploads/articles'), $filename);
+            
+            return $path;
+        }
+        
+        return null;
+    }
+
     public function index()
     {
         $articles = Article::query()
@@ -46,8 +62,10 @@ class ArticleController extends Controller
             'content' => 'required',
             'author' => 'required|string|max:255',
             'category' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
+
+        $imagePath = $this->handleImageUpload($request);
 
         $article = new Article();
         $article->title = $this->cleanTitle($validated['title']);
@@ -57,14 +75,7 @@ class ArticleController extends Controller
         $article->slug = Str::slug($validated['title']);
         $article->is_published = false;
         $article->view_count = 0;
-
-        // Görsel yükleme
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/articles'), $imageName);
-            $article->image = 'uploads/articles/' . $imageName;
-        }
+        $article->image = $imagePath;
 
         $article->save();
 

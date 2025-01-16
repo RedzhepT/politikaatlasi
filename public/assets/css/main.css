@@ -428,10 +428,6 @@ section {
     }
 }
 
-.sticked-header-offset {
-    margin-top: 70px;
-}
-
 section {
     scroll-margin-top: 70px;
 }
@@ -508,50 +504,6 @@ section {
     .navbar .active:focus,
     .navbar li:hover > a {
         color: #fff;
-    }
-
-    .navbar .dropdown ul {
-        display: block;
-        position: absolute;
-        left: 28px;
-        top: calc(100% + 30px);
-        margin: 0;
-        padding: 10px 0;
-        z-index: 99;
-        opacity: 0;
-        visibility: hidden;
-        background: #fff;
-        box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
-        transition: 0.3s;
-        border-radius: 4px;
-    }
-
-    .navbar .dropdown ul li {
-        min-width: 200px;
-    }
-
-    .navbar .dropdown ul a {
-        padding: 10px 20px;
-        font-size: 15px;
-        text-transform: none;
-        font-weight: 600;
-        color: #384d5d;
-    }
-
-    .navbar .dropdown ul a i {
-        font-size: 12px;
-    }
-
-    .navbar .dropdown ul a:hover,
-    .navbar .dropdown ul .active:hover,
-    .navbar .dropdown ul li:hover > a {
-        color: var(--color-secondary);
-    }
-
-    .navbar .dropdown:hover > ul {
-        opacity: 1;
-        top: 100%;
-        visibility: visible;
     }
 
     .navbar .dropdown .dropdown ul {
@@ -1476,7 +1428,7 @@ section {
 
 .portfolio-details .portfolio-description .testimonial-item p {
     font-style: italic;
-    margin: 0 0 15px 0 0 0;
+    margin: 0 0 15px 0 0;
     padding: 0;
 }
 
