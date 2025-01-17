@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
 
-// Ana sayfa - herkes erişebilir
+// Ana sayfa
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Makale route'ları
@@ -51,7 +51,3 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
 Auth::routes();
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
-
-Route::get('/kategori/{slug}', [ArticleController::class, 'category'])->name('articles.category');
-
-Route::get('/blog/ara', [ArticleController::class, 'search'])->name('articles.search');
