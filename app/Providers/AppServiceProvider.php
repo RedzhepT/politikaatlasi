@@ -31,5 +31,9 @@ class AppServiceProvider extends ServiceProvider
                 ->orderByDesc('articles_count')
                 ->get());
         });
+
+        if(config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
     }
 }
