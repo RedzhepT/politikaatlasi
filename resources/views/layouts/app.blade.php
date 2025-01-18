@@ -22,7 +22,9 @@
     <!-- Alternatif PNG favicon için -->
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Bunun yerine direkt CSS ve JS dosyalarını kullanalım -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <title>@yield('title', config('app.name'))</title>
     
