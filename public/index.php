@@ -1,18 +1,23 @@
 <?php
 
+// Hata raporlamasını aç
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-// Determine if the application is in maintenance mode...
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
-    require $maintenance;
-}
-
-// Composer autoloader
+// Composer autoloader'ı yükle
 require __DIR__.'/../vendor/autoload.php';
 
-// Bootstrap Laravel
+// Laravel uygulamasını başlat
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-// ... rest of the code ...
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$response = $kernel->handle(
+    $request = Request::capture()
+)->send();
+
+$kernel->terminate($request, $response);

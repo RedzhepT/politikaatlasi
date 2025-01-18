@@ -23,9 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
-        // veya
-        // Paginator::useBootstrap();
-
+        
         View::composer('layouts.partials.footer', function ($view) {
             $view->with('categories', Category::withCount('articles')
                 ->orderByDesc('articles_count')
