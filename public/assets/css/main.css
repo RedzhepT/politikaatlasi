@@ -356,6 +356,17 @@ section {
     color: var(--color-secondary);
 }
 
+/* Arama butonu stilleri */
+.navbar .search-btn {
+    padding: 8px 12px;
+    color: var(--color-white);
+    transition: 0.3s;
+}
+
+.navbar .search-btn:hover {
+    color: var(--color-primary);
+}
+
 /* Mobile Navigation */
 
 /* Tablet görünümü */
@@ -417,6 +428,14 @@ section {
         position: fixed;
         right: 15px;
         top: 15px;
+    }
+
+    /* Mobile görünümde arama butonu */
+    .navbar .search-btn {
+        padding: 15px 20px;
+        display: block;
+        width: 100%;
+        text-align: left;
     }
 }
 

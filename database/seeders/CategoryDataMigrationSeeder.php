@@ -11,21 +11,21 @@ class CategoryDataMigrationSeeder extends Seeder
 {
     public function run()
     {
-        // Mevcut kategorileri topla
-        $existingCategories = Article::distinct('old_category')->pluck('old_category');
-        
-        // Her kategori için yeni Category kaydı oluştur
-        foreach ($existingCategories as $categoryName) {
-            if (!$categoryName) continue;
-            
+        // Kategorileri oluştur
+        $categories = [
+            'Siyasi Sistemler',
+            'Demokrasi',
+            'İdeolojiler',
+            'Uluslararası İlişkiler',
+            'Ekonomi Politikaları',
+            'Siyasi Tarih'
+        ];
+
+        foreach ($categories as $categoryName) {
             $category = Category::firstOrCreate(
                 ['name' => $categoryName],
                 ['description' => $categoryName . ' kategorisindeki makaleler']
             );
-            
-            // Bu kategorideki makaleleri güncelle
-            Article::where('old_category', $categoryName)
-                  ->update(['category_id' => $category->id]);
         }
     }
 } 

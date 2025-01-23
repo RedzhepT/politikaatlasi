@@ -50,49 +50,17 @@ class ArticleController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $query = $request->get('q');
         
-        // Boş sorgu kontrolü
-        if (empty($query)) {
-            return redirect()->route('articles.index')
-                ->with('info', 'Lütfen bir arama terimi girin.');
-        }
-
-        // Minimum 3 karakter kontrolü
-        if (strlen($query) < 3) {
-            return back()
-                ->with('error', 'Arama terimi en az 3 karakter olmalıdır.');
-        }
-
-        $articles = Article::with('category')
-            ->where(function($q) use ($query) {
-                $q->where('title', 'LIKE', "%{$query}%")
-                  ->orWhere('content', 'LIKE', "%{$query}%")
-                  ->orWhereHas('category', function($q) use ($query) {
-                      $q->where('name', 'LIKE', "%{$query}%");
-                  });
-            })
-            ->when($query, function($q) use ($query) {
-                // Tam eşleşmelere daha yüksek öncelik ver
-                return $q->orderByRaw('
-                    CASE 
-                        WHEN title LIKE ? THEN 1
-                        WHEN title LIKE ? THEN 2
-                        WHEN content LIKE ? THEN 3
-                        ELSE 4
-                    END
-                ', [
-                    $query,             // Tam eşleşme
-                    "%{$query}%",       // Kısmi eşleşme
-                    "%{$query}%"        // İçerikte eşleşme
-                ]);
-            })
+        $articles = Article::query()
+            ->where('title', 'like', "%{$query}%")
+            ->orWhere('content', 'like', "%{$query}%")
             ->latest()
-            ->paginate(9);
-            
-        return view('articles.search', [
+            ->paginate(10);
+        
+        return view('articles.index', [
             'articles' => $articles,
-            'query' => $query
+            'search' => $query
         ]);
     }
 }

@@ -11,11 +11,7 @@ use App\Http\Controllers\CommentController;
 
 // Ana sayfa
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-// Yönlendirme route'u
-Route::get('/home', function () {
-    return redirect('/');
-});
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Makale route'ları
 Route::prefix('blog')->group(function () {

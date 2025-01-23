@@ -1,7 +1,7 @@
-<header id="header" class="header fixed-top d-flex align-items-center">
+<header id="header" class="header d-flex align-items-center">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
         <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-            <h1>PolitikaAtlası</h1>
+            <h1>Politika Atlası</h1>
         </a>
         
         <nav id="navbar" class="navbar">
@@ -10,6 +10,11 @@
                 <li><a href="{{ route('about') }}">Hakkımızda</a></li>
                 <li><a href="{{ route('articles.index') }}">Blog</a></li>
                 <li><a href="{{ route('contact') }}">İletişim</a></li>
+                <li>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li>
                 @auth
                     @if(auth()->user()->is_admin)
                         <li><a href="{{ route('admin.dashboard') }}" class="btn-admin">
@@ -93,21 +98,6 @@
         <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
         <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
     </div>
-</header> 
+</header>
 
-<style>
-.header.fixed-top {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-    transition: transform 0.3s ease-in-out;
-}
-
-/* Search section için offset */
-.search-section {
-    padding: 0.5rem 0;
-    margin-top: 72px; /* Header yüksekliği */
-}
-</style> 
+@include('layouts.partials.search') 
