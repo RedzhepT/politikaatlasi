@@ -44,13 +44,21 @@ document.addEventListener("DOMContentLoaded", () => {
     /**
      * Mobile nav toggle
      */
-    const mobileNavToggle = document.querySelector(".mobile-nav-toggle");
+    const mobileNavShow = document.querySelector(".mobile-nav-show");
+    const mobileNavHide = document.querySelector(".mobile-nav-hide");
     const navbar = document.querySelector("#navbar");
 
-    if (mobileNavToggle) {
+    if (mobileNavShow) {
         // Hamburger menü tıklama
-        mobileNavToggle.addEventListener("click", function (e) {
-            e.stopPropagation(); // Event'in document'a ulaşmasını engelle
+        mobileNavShow.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        mobileNavHide.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             toggleMenu();
         });
 
@@ -59,7 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (
                 navbar.classList.contains("mobile-nav-active") &&
                 !navbar.contains(e.target) &&
-                !mobileNavToggle.contains(e.target)
+                !mobileNavShow.contains(e.target) &&
+                !mobileNavHide.contains(e.target)
             ) {
                 toggleMenu();
             }
@@ -68,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Menü içindeki linklere tıklandığında menüyü kapat
         document.querySelectorAll("#navbar a").forEach((navbarlink) => {
             navbarlink.addEventListener("click", () => {
-                if (window.innerWidth < 576) {
+                if (window.innerWidth < 992) {
                     toggleMenu();
                 }
             });
@@ -78,8 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Menüyü aç/kapat
     function toggleMenu() {
         navbar.classList.toggle("mobile-nav-active");
-        mobileNavToggle.classList.toggle("bi-list");
-        mobileNavToggle.classList.toggle("bi-x");
+        mobileNavShow.classList.toggle("d-none");
+        mobileNavHide.classList.toggle("d-none");
+        document.body.classList.toggle("mobile-nav-active");
     }
 
     // Dropdown kontrolü

@@ -384,6 +384,7 @@ section {
 
     #header .navbar {
         position: fixed;
+        display: none;
         top: 0;
         right: -100%;
         width: 300px;
@@ -565,49 +566,43 @@ section {
         top: 0;
         right: -100%;
         width: 100%;
-        max-width: 400px;
+        max-width: 300px;
         bottom: 0;
-        transition: 0.3s;
+        transition: all 0.3s ease-in-out;
         z-index: 9997;
-    }
-
-    .navbar ul {
-        position: absolute;
-        inset: 0;
-        padding: 50px 0 10px 0;
-        margin: 0;
-        background: rgba(0, 131, 116, 0.9);
+        background: var(--color-primary);
         overflow-y: auto;
-        transition: 0.3s;
-        z-index: 9998;
+        padding-top: 60px;
     }
 
-    .navbar a,
-    .navbar a:focus {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-        font-family: var(--font-primary);
-        font-size: 15px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.7);
-        white-space: nowrap;
-        transition: 0.3s;
+    .mobile-nav-active .navbar {
+        right: 0;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    .navbar a i,
-    .navbar a:focus i {
-        font-size: 12px;
-        line-height: 0;
-        margin-left: 5px;
+    body.mobile-nav-active {
+        overflow: hidden;
     }
 
-    .navbar a:hover,
-    .navbar .active,
-    .navbar .active:focus,
-    .navbar li:hover > a {
-        color: #fff;
+    .navbar ul li {
+        padding: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar ul li:last-child {
+        border-bottom: none;
+    }
+
+    .navbar a {
+        padding: 15px 20px;
+        width: 100%;
+    }
+
+    .navbar .dropdown-menu {
+        position: static;
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px 0;
     }
 
     .navbar .getstarted,
@@ -641,41 +636,28 @@ section {
         display: block;
     }
 
-    .mobile-nav-show {
-        color: rgba(255, 255, 255, 0.6);
+    .mobile-nav-show,
+    .mobile-nav-hide {
         font-size: 28px;
         cursor: pointer;
-        line-height: 0;
-        transition: 0.5s;
+        position: fixed;
+        right: 20px;
+        top: 20px;
+        color: #fff;
         z-index: 9999;
-        margin-right: 10px;
+        transition: 0.3s;
     }
 
     .mobile-nav-hide {
         color: #fff;
         font-size: 32px;
-        cursor: pointer;
-        line-height: 0;
-        transition: 0.5s;
-        position: fixed;
-        right: 20px;
-        top: 20px;
-        z-index: 9999;
     }
 
-    .mobile-nav-active {
-        overflow: hidden;
-    }
-
-    .mobile-nav-active .navbar {
-        right: 0;
-    }
-
-    .mobile-nav-active .navbar:before {
+    .mobile-nav-active:before {
         content: "";
         position: fixed;
         inset: 0;
-        background: rgba(0, 106, 93, 0.8);
+        background: rgba(0, 0, 0, 0.6);
         z-index: 9996;
     }
 }
@@ -2296,10 +2278,6 @@ section {
 .blog .blog-details .meta-bottom a {
     color: rgba(34, 34, 34, 0.8);
     transition: 0.3s;
-}
-
-.blog .blog-details .meta-bottom a:hover {
-    color: var(--color-primary);
 }
 
 .blog .blog-details .meta-bottom .cats {

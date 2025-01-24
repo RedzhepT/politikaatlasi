@@ -110,7 +110,7 @@
             <div class="col-lg-3 col-md-6">
                 <div class="stats-item text-center w-100 h-100">
                     <span class="purecounter">{{ $authorCount ?? 0 }}</span>
-                    <p>Yazar</p>
+                    <p>Kullanıcı</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">

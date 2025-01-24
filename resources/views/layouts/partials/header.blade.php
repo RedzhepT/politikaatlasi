@@ -4,6 +4,12 @@
             <h1>Politika Atlası</h1>
         </a>
         
+        {{-- Mobile nav toggle butonları --}}
+        <div class="d-lg-none">
+            <i class="bi bi-list mobile-nav-show"></i>
+            <i class="bi bi-x mobile-nav-hide d-none"></i>
+        </div>
+
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a href="{{ route('home') }}">Anasayfa</a></li>
@@ -22,16 +28,16 @@
                         </a></li>
                     @endif
                     <li class="nav-item dropdown d-lg-none">
-                        <a href="#" class="nav-link mobile-dropdown-toggle">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> {{ auth()->user()->name }}
                         </a>
-                        <ul class="mobile-dropdown-menu">
+                        <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">
                                 <i class="bi bi-person"></i> Profil
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form action="{{ route('logout') }}" method="POST" class="px-0">
+                                <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-danger">
                                         <i class="bi bi-box-arrow-right"></i> Çıkış Yap
@@ -42,12 +48,12 @@
                     </li>
                 @else
                     <li class="d-lg-none">
-                        <a href="{{ route('login') }}">
+                        <a href="{{ route('login') }}" class="nav-link">
                             <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
                         </a>
                     </li>
                     <li class="d-lg-none">
-                        <a href="{{ route('register') }}">
+                        <a href="{{ route('register') }}" class="nav-link">
                             <i class="bi bi-person-plus"></i> Kayıt Ol
                         </a>
                     </li>
@@ -94,9 +100,6 @@
                 </a>
             </div>
         @endauth
-
-        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
     </div>
 </header>
 
