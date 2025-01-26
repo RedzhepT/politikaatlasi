@@ -127,7 +127,7 @@
         }
 
         /* Mobil görünüm için dropdown stilleri */
-        @media (max-width: 991px) {
+        @media (max-width: 991.98px) {
             .navbar {
                 position: fixed;
                 top: 72px;
