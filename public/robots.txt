@@ -1,4 +1,8 @@
 User-agent: *
+Allow: /blog/
+Allow: /blog/kategori/
+Disallow: /login
+Disallow: /register
 Allow: /
 
 Sitemap: https://politikaatlasi.co/sitemap.xml

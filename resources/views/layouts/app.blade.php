@@ -24,7 +24,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <title>@yield('title', config('app.name'))</title>
+    <title>@yield('title', 'Ülke Yönetim Biçimleri')</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
