@@ -371,6 +371,10 @@ section {
 
 /* Tablet görünümü */
 @media (max-width: 991.98px) {
+    body {
+        overflow-x: hidden; /* Yatay scrollbar'ı engeller */
+    }
+
     .mobile-nav-toggle {
         display: block;
         color: #ffffff;
@@ -383,15 +387,21 @@ section {
     }
 
     #header .navbar {
+        display: none;
         position: fixed;
         top: 0;
-        right: -100%;
+        right: -300px;
         width: 300px;
         bottom: 0;
-        transition: 0.3s;
         z-index: 1999;
         overflow-y: auto;
         padding-top: 60px;
+        transition: right 0.3s ease-in-out;
+    }
+
+    #header .navbar.mobile-nav-active {
+        display: block;
+        right: 0;
     }
 
     #header .navbar ul {
@@ -419,16 +429,6 @@ section {
     #header .navbar a:hover {
         color: var(--color-secondary);
         background: rgba(255, 255, 255, 0.1);
-    }
-
-    #header .navbar.mobile-nav-active {
-        right: 0;
-    }
-
-    .mobile-nav-active .mobile-nav-toggle {
-        position: fixed;
-        right: 15px;
-        top: 15px;
     }
 
     /* Mobile görünümde arama butonu */
