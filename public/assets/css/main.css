@@ -371,10 +371,6 @@ section {
 
 /* Tablet görünümü */
 @media (max-width: 991.98px) {
-    body {
-        overflow-x: hidden; /* Yatay scrollbar'ı engeller */
-    }
-
     .mobile-nav-toggle {
         display: block;
         color: #ffffff;

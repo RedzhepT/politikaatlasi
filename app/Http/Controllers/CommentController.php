@@ -23,4 +23,34 @@ class CommentController extends Controller
 
         return back()->with('success', 'Yorumunuz başarıyla eklendi.');
     }
+
+    public function destroy(Comment $comment)
+    {
+        // Yetkilendirme kontrolü
+        if ($comment->user_id !== auth()->id()) {
+            abort(403, 'Bu işlem için yetkiniz yok.');
+        }
+
+        $comment->delete();
+
+        return back()->with('success', 'Yorum başarıyla silindi.');
+    }
+
+    public function update(Request $request, Comment $comment)
+    {
+        // Yetkilendirme kontrolü
+        if ($comment->user_id !== auth()->id()) {
+            abort(403, 'Bu işlem için yetkiniz yok.');
+        }
+
+        $validated = $request->validate([
+            'content' => 'required|string|max:1000'
+        ]);
+
+        $comment->update([
+            'content' => $validated['content']
+        ]);
+
+        return back()->with('success', 'Yorumunuz başarıyla güncellendi.');
+    }
 } 

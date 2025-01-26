@@ -29,7 +29,7 @@
 <section id="blog" class="blog">
     <div class="container" data-aos="fade-up">
         <div class="row g-5">
-            <div class="col-lg-8">
+            <div class="col-lg-8 order-1">
                 <article class="blog-details">
                     @if($article->image)
                     <div class="post-img">
@@ -62,58 +62,146 @@
                 </article>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 order-lg-2 order-3">
                 @include('articles.partials.sidebar')
             </div>
-        </div>
 
-        <!-- Yorumlar Bölümü -->
-        <div class="row g-5">
-            <div class="col-lg-8">
-                <div class="comments-section mt-5">
-                    <h3>Yorumlar</h3>
-                    
-                    @forelse($article->comments as $comment)
-                        <div class="comment border-bottom py-3">
-                            <div class="d-flex align-items-center mb-2">
-                                <strong>{{ $comment->user->name }}</strong>
-                                <small class="text-muted ms-2">{{ $comment->created_at->diffForHumans() }}</small>
+                    <!-- Yorumlar Bölümü -->
+            <div class="row order-lg-3 order-2">
+                <div class="col-lg-8">
+                    <div class="comments-section mt-5">
+                        <h3>Yorumlar</h3>
+                        
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
-                            <p class="mb-0">{{ $comment->content }}</p>
-                        </div>
-                    @empty
-                        <div class="alert alert-info">
-                            Henüz yorum yapılmamış. İlk yorumu siz yapın!
-                        </div>
-                    @endforelse
+                        @endif
+                        
+                        <!-- Geçici: Yorum sistemi bakım aşamasındadır -->
+                
+                        @forelse($article->comments as $comment)
+                            <div class="comment border-bottom py-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <strong>{{ $comment->user->name }}</strong>
+                                        <small class="text-muted ms-2">{{ $comment->created_at->diffForHumans() }}</small>
+                                    </div>
+                                    
+                                    @if(auth()->id() === $comment->user_id)
+                                        <div class="comment-actions">
+                                            <button class="btn btn-link btn-sm text-primary p-0 me-2" 
+                                                    title="Düzenle"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editModal{{ $comment->id }}">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            <button class="btn btn-link btn-sm text-danger p-0" 
+                                                    title="Sil" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteModal{{ $comment->id }}">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
 
-                    <div class="comment-form mt-4">
-                        @auth
-                            <form action="{{ route('comments.store') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="article_id" value="{{ $article->id }}">
-                                <div class="mb-3">
-                                    <label for="content" class="form-label">Yorumunuz</label>
-                                    <textarea class="form-control @error('content') is-invalid @enderror" 
-                                            id="content" 
-                                            name="content" 
-                                            rows="3" 
-                                            required></textarea>
-                                    @error('content')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                        <!-- Edit Modal -->
+                                        <div class="modal fade" id="editModal{{ $comment->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Yorumu Düzenle</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('comments.update', $comment->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label for="content{{ $comment->id }}" class="form-label">Yorumunuz</label>
+                                                                <textarea class="form-control" 
+                                                                        id="content{{ $comment->id }}" 
+                                                                        name="content" 
+                                                                        rows="4" 
+                                                                        required>{{ $comment->content }}</textarea>
+                                                            </div>
+                                                            <small class="text-muted">Son düzenleme: {{ $comment->updated_at->format('d.m.Y H:i') }}</small>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                                            <button type="submit" class="btn btn-primary">Güncelle</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal{{ $comment->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Yorumu Sil</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="comment-preview mb-3 p-3 bg-light rounded">
+                                                            <small class="text-muted d-block mb-2">{{ $comment->created_at->format('d.m.Y H:i') }}</small>
+                                                            <p class="mb-0">{{ $comment->content }}</p>
+                                                        </div>
+                                                        <p class="mb-0 text-danger">Bu yorumu silmek istediğinizden emin misiniz?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                                                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger">Sil</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
-                                <button type="submit" class="btn btn-primary">Yorum Yap</button>
-                            </form>
-                        @else
-                            <div class="alert alert-info">
-                                Yorum bırakmak için <a href="{{ route('login') . '?redirect=' . request()->url() }}">giriş yapmalısınız</a>.
+                                <p class="mb-0">{{ $comment->content }}</p>
                             </div>
-                        @endauth
+                        @empty
+                            <div class="alert alert-info">
+                                Henüz yorum yapılmamış. İlk yorumu siz yapın!
+                            </div>
+                        @endforelse
+
+                        <div class="comment-form mt-4">
+                            @auth
+                                <form action="{{ route('comments.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="article_id" value="{{ $article->id }}">
+                                    <div class="mb-3">
+                                        <label for="content" class="form-label">Yorumunuz</label>
+                                        <textarea class="form-control @error('content') is-invalid @enderror" 
+                                                id="content" 
+                                                name="content" 
+                                                rows="3" 
+                                                required></textarea>
+                                        @error('content')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Yorum Yap</button>
+                                </form>
+                            @else
+                                <div class="alert alert-info">
+                                    Yorum bırakmak için <a href="{{ route('login') . '?redirect=' . request()->url() }}">giriş yapmalısınız</a>.
+                                </div>
+                            @endauth
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </div>
 </section>
 
@@ -127,11 +215,6 @@
         right: 0;
         z-index: 997;
         background: var(--color-primary);
-    }
-
-    /* Navbar link renkleri */
-    .header a {
-        color: white !important;
     }
 
     .header .logo h1 {

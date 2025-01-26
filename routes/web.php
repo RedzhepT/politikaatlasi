@@ -52,3 +52,8 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
 Auth::routes();
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+});
