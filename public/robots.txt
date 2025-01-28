@@ -1,8 +1,10 @@
 User-agent: *
-Allow: /blog/
+Allow: /ulke-yonetim-sistemleri/
 Allow: /blog/kategori/
+Allow: /blog/
+Disallow: /admin/
 Disallow: /login
 Disallow: /register
-Allow: /
+Disallow: /search
 
 Sitemap: https://politikaatlasi.co/sitemap.xml

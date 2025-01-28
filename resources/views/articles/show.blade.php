@@ -37,28 +37,38 @@
                     </div>
                     @endif
 
-                    <h2 class="title">{{ $article->title }}</h2>
+                    <article itemscope itemtype="http://schema.org/Article">
+                        <meta itemprop="headline" content="{{ $article->title }}">
+                        <meta itemprop="datePublished" content="{{ $article->created_at->toIso8601String() }}">
+                        <meta itemprop="dateModified" content="{{ $article->updated_at->toIso8601String() }}">
+                        
+                        <div itemprop="author" itemscope itemtype="http://schema.org/Person">
+                            <meta itemprop="name" content="{{ $article->author_name }}">
+                        </div>
 
-                    <div class="meta-top">
-                        <ul>
-                            <li class="d-flex align-items-center">
-                                <i class="bi bi-person"></i>
-                                <a href="#">{{ $article->author_name }}</a>
-                            </li>
-                            <li class="d-flex align-items-center">
-                                <i class="bi bi-clock"></i>
-                                <a href="#"><time datetime="{{ $article->created_at }}">{{ $article->created_at->format('d M Y') }}</time></a>
-                            </li>
-                            <li class="d-flex align-items-center">
-                                <i class="bi bi-eye"></i>
-                                <a href="#">{{ $article->views }} Görüntülenme</a>
-                            </li>
-                        </ul>
-                    </div>
+                        <div itemprop="articleBody">
+                            <div class="meta-top">
+                                <ul>
+                                    <li class="d-flex align-items-center">
+                                        <i class="bi bi-person"></i>
+                                        <a href="#">{{ $article->author_name }}</a>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="bi bi-clock"></i>
+                                        <a href="#"><time datetime="{{ $article->created_at }}">{{ $article->created_at->format('d M Y') }}</time></a>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="bi bi-eye"></i>
+                                        <a href="#">{{ $article->views }} Görüntülenme</a>
+                                    </li>
+                                </ul>
+                            </div>
 
-                    <div class="content">
-                        {!! $article->content !!}
-                    </div>
+                            <div class="content">
+                                {!! preg_replace('/<h3/i', '<h2', preg_replace('/<\/h3>/i', '</h2>', $article->content)) !!}
+                            </div>
+                        </div>
+                    </article>
                 </article>
             </div>
 

@@ -36,7 +36,7 @@ class GenerateSitemap extends Command
 
         // Makaleler
         Article::all()->each(function (Article $article) use ($sitemap, $domain) {
-            $sitemap->add(Url::create($domain . "/blog/{$article->slug}")
+            $sitemap->add(Url::create($domain . "/ulke-yonetim-sistemleri/{$article->slug}")
                 ->setLastModificationDate($article->updated_at)
                 ->setChangeFrequency('weekly')
                 ->setPriority(0.9));
@@ -44,7 +44,7 @@ class GenerateSitemap extends Command
 
         // Kategoriler
         Category::all()->each(function (Category $category) use ($sitemap, $domain) {
-            $sitemap->add(Url::create($domain . "/blog/kategori/{$category->slug}")
+            $sitemap->add(Url::create($domain . "/ulke-yonetim-sistemleri/kategori/{$category->slug}")
                 ->setChangeFrequency('weekly')
                 ->setPriority(0.8));
         });

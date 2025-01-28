@@ -14,7 +14,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::redirect('/home', '/', 301);
 
 // Makale route'ları
-Route::prefix('blog')->group(function () {
+Route::prefix('ulke-yonetim-sistemleri')->group(function () {
     Route::get('/', [ArticleController::class, 'index'])->name('articles.index');
     Route::get('/ara', [ArticleController::class, 'search'])->name('articles.search');
     Route::get('/kategori/{category:slug}', [ArticleController::class, 'category'])->name('articles.category');

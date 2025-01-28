@@ -24,7 +24,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <title>@yield('title', 'Ülke Yönetim Biçimleri')</title>
+    <title>@yield('title', 'Ülke Yönetim Biçimleri') | Politika Atlası</title>
+    <meta name="description" content="@yield('meta_description', 'Dünya ülkelerinin yönetim sistemleri, siyasi yapıları ve devlet sistemleri hakkında detaylı bilgiler.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'yönetim sistemleri, siyasi sistemler, devlet yönetimi') @if(isset($article)), {{ $article->title }}@endif">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
