@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Menüyü aç/kapat
     function toggleMenu() {
         navbar.classList.toggle("mobile-nav-active");
-        mobileNavToggle.classList.toggle("bi-list");
         mobileNavToggle.classList.toggle("bi-x");
     }
 

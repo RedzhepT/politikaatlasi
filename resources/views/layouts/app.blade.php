@@ -42,6 +42,7 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-icons.css') }}">
     @yield('styles')
 
     <!-- Pagination Styles -->
@@ -234,7 +235,7 @@
             }
 
             .mobile-dropdown-toggle::after {
-                content: "\F282";
+                /* content: "\F282"; */
                 font-family: "bootstrap-icons";
                 position: absolute;
                 right: 0.5rem;
