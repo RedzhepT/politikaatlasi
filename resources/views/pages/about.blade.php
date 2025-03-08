@@ -22,7 +22,7 @@
 </div>
 
 <section id="about" class="about">
-    <div class="container" data-aos="fade-up">
+    <div class="container">
         <div class="row gy-4">
             <div class="col-lg-6">
                 <img src="{{ asset('assets/img/about-2.jpg') }}" class="img-fluid rounded-4" alt="">
@@ -52,14 +52,14 @@
 </section>
 
 <section id="values" class="values">
-    <div class="container" data-aos="fade-up">
+    <div class="container">
         <div class="section-header">
             <h2>Değerlerimiz</h2>
             <p>Politika Atlası olarak benimsediğimiz temel ilkeler</p>
         </div>
 
         <div class="row gy-4">
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-4 col-md-6">
                 <div class="value-box">
                     <i class="bi bi-book-half"></i>
                     <h3>Eğitici İçerik</h3>
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="col-lg-4 col-md-6">
                 <div class="value-box">
                     <i class="bi bi-shield-check"></i>
                     <h3>Tarafsız Yaklaşım</h3>
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="col-lg-4 col-md-6">
                 <div class="value-box">
                     <i class="bi bi-graph-up-arrow"></i>
                     <h3>Güncel Analiz</h3>

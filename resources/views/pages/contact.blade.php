@@ -2,7 +2,7 @@
 
 @section('content')
 <section id="contact" class="contact">
-    <div class="container" data-aos="fade-up">
+    <div class="container">
         <div class="section-header">
             <h2>İletişim</h2>
             <p>Bizimle iletişime geçmek için aşağıdaki formu kullanabilirsiniz.</p>

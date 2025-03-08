@@ -27,7 +27,7 @@
 
 <!-- Article Content -->
 <section id="blog" class="blog">
-    <div class="container" data-aos="fade-up">
+    <div class="container">
         <div class="row g-5">
             <div class="col-lg-8 order-1">
                 <article class="blog-details">
@@ -210,8 +210,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </section>
 

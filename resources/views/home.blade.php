@@ -4,7 +4,7 @@
 <!-- Hero Section -->
 <section id="hero" class="hero">
     <div class="container position-relative">
-        <div class="row gy-5" data-aos="fade-in">
+        <div class="row gy-5">
             <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-lg-start">
                 <h2>Siyaseti Anlamak İçin <span>Doğru Adres</span></h2>
                 <p>Politika Atlası, farklı yönetim biçimlerini ve siyasi kavramları herkesin anlayabileceği bir dille açıklayan eğitici bir platformdur.</p>
@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2">
-                <img src="{{ asset('assets/img/hero-img.svg') }}" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="100">
+                <img src="{{ asset('assets/img/hero-img.svg') }}" class="img-fluid" alt="">
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
 
         <div class="row gy-4">
             @foreach($categories as $category)
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+            <div class="col-lg-4 col-md-6">
                 <div class="category-box">
                     <div class="icon"><i class="bi bi-book"></i></div>
                     <h3>{{ $category->name }}</h3>

@@ -23,7 +23,7 @@
 </div>
 
 <section id="blog" class="blog">
-    <div class="container" data-aos="fade-up">
+    <div class="container">
         <div class="row gy-4 posts-list">
             @forelse($articles as $article)
                 <div class="col-xl-4 col-md-6">

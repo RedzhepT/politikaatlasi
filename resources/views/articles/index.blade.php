@@ -23,7 +23,7 @@
 </div>
 
 <section id="blog" class="blog">
-    <div class="container" data-aos="fade-up">
+    <div class="container">
         <div class="row gy-4 posts-list">
             @foreach($articles as $article)
             <div class="col-xl-4 col-md-6">
@@ -56,4 +56,18 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('styles')
+<style>
+    .breadcrumbs .page-header h1 {
+        color: #fff;
+        font-size: 56px;
+        font-weight: 500;
+    }
+
+    .breadcrumbs .page-header p {
+        color: rgba(255, 255, 255, 0.8);
+    }
+</style>
 @endsection 
