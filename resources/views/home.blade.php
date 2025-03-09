@@ -7,13 +7,13 @@
         <div class="row gy-5">
             <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-lg-start">
                 <h2>Siyaseti Anlamak İçin <span>Doğru Adres</span></h2>
-                <p>Politika Atlası, farklı yönetim biçimlerini ve siyasi kavramları herkesin anlayabileceği bir dille açıklayan eğitici bir platformdur.</p>
+               
                 <div class="d-flex justify-content-center justify-content-lg-start">
                     <a href="{{ route('articles.index') }}" class="btn-get-started">Makaleleri Keşfet</a>
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2">
-                <img src="{{ asset('assets/img/hero-img.svg') }}" class="img-fluid" alt="">
+                <img src="{{ asset('assets/img/toppng.com-762x328.png') }}" class="img-fluid" alt="Dünya Haritası">
             </div>
         </div>
     </div>
@@ -22,6 +22,12 @@
 <!-- Öne Çıkan Kategoriler -->
 <section id="featured-categories" class="featured-categories">
     <div class="container" data-aos="fade-up">
+    <div class="section-header">
+            <h2>Politika Atlası Hakkında</h2>
+            <p>Politika Atlası ile siyasetin karmaşıklığını en aza indirerek herkesin politikayı daha iyi anlamasını sağlıyoruz. Makalelerle zenginleştirilmiş içeriğimizi sunarak tüm okuyucuların siyasi terimleri ve tanımlamaları öğrenmelerini hedefliyoruz. 
+Siyasi kavramların ve ideolojilerin farklılıklarını ortaya koyarak bunları okuyucuların dikkatine örneklerle sunuyoruz.  Politika Atlası’nı takip ederek, demokrasi, monarşi, cumhuriyet, otokrasi gibi farklı yönetim biçimlerini anlayabilir ve ayrıca, liberalizm, sosyalizm, muhafazakarlık gibi temel siyasi ideolojileri inceleyebilirsiniz. 
+Siyasi gelişmeleri ve olayları takip ederek sürekli güncellediğimiz içeriğimizle bilgilerinizi güncel tutabilir ve konuları farklı bakış açılarıyla değerlendirebilirsiniz.z</p>
+        </div>
         <div class="section-header">
             <h2>Kategoriler</h2>
             <p>Siyasetin farklı alanlarını keşfedin</p>
