@@ -14,8 +14,10 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Admin CSS -->
+    <link href="{{ asset('css/admin/layout.css') }}" rel="stylesheet">
     
     <style>
         :root {
@@ -251,40 +253,28 @@
     <nav id="sidebar">
         <div class="sidebar-header">
             <h3>Admin Panel</h3>
-            <button class="btn btn-link text-light p-0 d-none d-md-block" id="sidebarCollapse">
-                <i class="bi bi-list"></i>
+            <button id="sidebarToggle" class="btn btn-link text-white p-0">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
 
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                    <i class="bi bi-speedometer2"></i>
+                <a href="{{ route('admin.index') }}" class="nav-link">
+                    <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('admin.articles.index') }}" class="nav-link">
-                    <i class="bi bi-file-text"></i>
-                    <span>İçerikler</span>
+                    <i class="fas fa-newspaper"></i>
+                    <span>Makaleler</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="bi bi-people"></i>
-                    <span>Kullanıcılar</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="bi bi-chat-dots"></i>
-                    <span>Yorumlar</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="bi bi-gear"></i>
-                    <span>Ayarlar</span>
+                <a href="{{ route('admin.categories.index') }}" class="nav-link">
+                    <i class="fas fa-folder"></i>
+                    <span>Kategoriler</span>
                 </a>
             </li>
         </ul>
@@ -296,13 +286,13 @@
         <div class="pagination-wrapper">
             <div class="pagination-nav">
                 <a href="#" class="page-button disabled">
-                    <i class="bi bi-chevron-left"></i>
+                    <i class="fas fa-chevron-left"></i>
                 </a>
                 <a href="#" class="page-button active">1</a>
                 <a href="#" class="page-button">2</a>
                 <a href="#" class="page-button">3</a>
                 <a href="#" class="page-button">
-                    <i class="bi bi-chevron-right"></i>
+                    <i class="fas fa-chevron-right"></i>
                 </a>
             </div>
             <div class="page-info">
@@ -318,23 +308,23 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <button class="btn btn-link d-md-none" id="sidebarCollapsePhone">
-                    <i class="bi bi-list"></i>
+                    <i class="fas fa-bars"></i>
                 </button>
                 
                 <div class="ms-auto d-flex align-items-center">
                     <a href="{{ route('home') }}" class="btn btn-outline-primary me-3">
-                        <i class="bi bi-house-door"></i> Siteye Dön
+                        <i class="fas fa-home"></i> Siteye Dön
                     </a>
                     <div class="dropdown">
                         <button class="btn btn-link dropdown-toggle text-dark" type="button" id="userDropdown" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i>
+                            <i class="fas fa-user-circle"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Profil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Profil</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">Çıkış Yap</button>
+                                    <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</button>
                                 </form>
                             </li>
                         </ul>
@@ -343,7 +333,14 @@
             </div>
         </nav>
 
-        <main class="p-4">
+        <!-- Mobile Toggle -->
+        <div class="d-lg-none p-3">
+            <button id="mobileToggle" class="btn btn-dark">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <main>
             @yield('content')
         </main>
     </div>
@@ -380,6 +377,9 @@
             });
         });
     </script>
+
+    <!-- Admin JS -->
+    <script src="{{ asset('js/admin/layout.js') }}"></script>
 
     @yield('scripts')
 </body>
