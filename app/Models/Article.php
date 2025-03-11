@@ -12,7 +12,13 @@ class Article extends Model
         'slug',
         'author_name',
         'image',
-        'is_published'
+        'is_published',
+        'category_id'
+    ];
+
+    protected $casts = [
+        'is_published' => 'boolean',
+        'views' => 'integer'
     ];
 
     public function comments()

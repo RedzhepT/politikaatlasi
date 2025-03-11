@@ -7,11 +7,11 @@
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <span class="page-button disabled">
-                    <i class="bi bi-chevron-left"></i>
+                    <i class="fas fa-chevron-left"></i>
                 </span>
             @else
                 <a href="{{ $paginator->previousPageUrl() }}" class="page-button">
-                    <i class="bi bi-chevron-left"></i>
+                    <i class="fas fa-chevron-left"></i>
                 </a>
             @endif
 
@@ -46,11 +46,11 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <a href="{{ $paginator->nextPageUrl() }}" class="page-button">
-                    <i class="bi bi-chevron-right"></i>
+                    <i class="fas fa-chevron-right"></i>
                 </a>
             @else
                 <span class="page-button disabled">
-                    <i class="bi bi-chevron-right"></i>
+                    <i class="fas fa-chevron-right"></i>
                 </span>
             @endif
         </div>

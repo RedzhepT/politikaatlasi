@@ -8,6 +8,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ImageUploadController;
 
 // Ana sayfa
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -38,16 +40,12 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Admin routes
-Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::controller(AdminController::class)->group(function () {
-            Route::get('/', 'index')->name('dashboard');
-        });
-        Route::resource('articles', AdminArticleController::class);
-        Route::post('upload/image', [App\Http\Controllers\Admin\UploadController::class, 'uploadImage'])->name('upload.image');
-    });
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::resource('articles', AdminArticleController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::post('upload/image', [ImageUploadController::class, 'upload'])->name('upload.image');
+});
 
 Auth::routes();
 

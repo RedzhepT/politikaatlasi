@@ -1,0 +1,147 @@
+/* Editor Styles */
+.editor-wrapper {
+    padding: 20px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-radius: 4px 4px 0 0;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 2px;
+    border-right: 1px solid #eee;
+    padding-right: 10px;
+}
+
+.toolbar-group:last-child {
+    border-right: none;
+}
+
+.toolbar button {
+    width: 35px;
+    height: 35px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.toolbar button:hover {
+    background: #f0f0f0;
+    border-color: #ccc;
+}
+
+.toolbar button i {
+    font-size: 16px;
+}
+
+.text-fields {
+    padding: 20px;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+}
+
+.text-fields > div:not(.editor-field) {
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+    user-select: none;
+    color: #333;
+}
+
+.editor-field {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    background: white;
+    min-height: 40px;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+
+.editor-field:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.single-line {
+    height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.multi-line {
+    min-height: 300px;
+    overflow-y: auto;
+}
+
+/* Editor içerik stilleri */
+.editor-field img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px auto;
+    border-radius: 4px;
+    display: block;
+}
+
+.editor-field figure {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+
+.editor-field figure img {
+    width: 100%;
+    height: auto;
+    margin: 10px auto;
+    border-radius: 4px;
+    display: block;
+}
+
+.editor-field figure figcaption {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.editor-field a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.editor-field a:hover {
+    text-decoration: underline;
+}
+
+.editor-field ul,
+.editor-field ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+
+.editor-field li {
+    margin: 5px 0;
+}

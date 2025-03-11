@@ -283,6 +283,49 @@
         font-size: 12px;
         color: #666;
     }
+
+    .select-field {
+        height: 40px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px 12px;
+        width: 50%;
+        margin-bottom: 20px;
+        font-size: 14px;
+        transition: border-color 0.2s;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .select-field:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+
+    .new-category-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 15px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+
+    .new-category-btn:hover {
+        background: #218838;
+        color: white;
+        text-decoration: none;
+    }
+
+    .new-category-btn i {
+        margin-right: 5px;
+    }
 </style>
 @endsection
 
@@ -359,14 +402,22 @@
             <div>Başlık</div>
             <div name="title" class="editor-field single-line" contenteditable="true"></div>
             
-            <div>Makale</div>
-            <div name="content" class="editor-field multi-line" contenteditable="true"></div>
-            
             <div>Yazar</div>
-            <div name="author" class="editor-field single-line" contenteditable="true"></div>
+            <input type="text" name="author" class="editor-field single-line" required>
 
             <div>Kategori</div>
-            <div name="category" class="editor-field single-line" contenteditable="true"></div>
+            <select name="category" class="select-field" required>
+                <option value="">Kategori Seçin</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+            <a href="{{ route('admin.categories.create') }}" class="new-category-btn" target="_blank">
+                <i class="bi bi-plus-lg"></i> Yeni Kategori
+            </a>
+            
+            <div>İçerik</div>
+            <div name="content" class="editor-field multi-line" contenteditable="true"></div>
         </div>
 
         <div class="button-container">

@@ -17,7 +17,7 @@
                 </li>
                 @auth
                     @if(auth()->user()->is_admin)
-                        <li><a href="{{ route('admin.dashboard') }}" class="btn-admin">
+                        <li><a href="{{ route('admin.articles.index') }}" class="btn-admin">
                             <i class="bi bi-speedometer2"></i> Admin Panel
                         </a></li>
                     @endif

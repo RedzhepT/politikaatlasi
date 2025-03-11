@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>Makaleler</h1>
                 <a href="{{ route('admin.articles.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg"></i> Yeni Makale
+                    <i class="fas fa-plus"></i> Yeni Makale
                 </a>
             </div>
 
@@ -53,7 +53,7 @@
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route('admin.articles.edit', $article) }}" 
                                                    class="btn btn-sm btn-primary">
-                                                    <i class="bi bi-pencil"></i>
+                                                    <i class="fas fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('admin.articles.destroy', $article) }}" 
                                                       method="POST" 
@@ -62,7 +62,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="bi bi-x-square"></i>
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
                                             </div>
