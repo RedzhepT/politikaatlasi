@@ -1,7 +1,7 @@
 class Editor {
     constructor(options = {}) {
         this.contentField = document.getElementById(
-            options.contentFieldId || "content"
+            options.contentFieldId || "articleContent"
         );
         this.hiddenContent = document.getElementById(
             options.hiddenContentId || "hiddenContent"
@@ -178,7 +178,7 @@ class Editor {
 // Usage:
 document.addEventListener("DOMContentLoaded", () => {
     const editor = new Editor({
-        contentFieldId: "content",
+        contentFieldId: "articleContent",
         hiddenContentId: "hiddenContent",
         titleFieldId: "title",
         hiddenTitleId: "hiddenTitle",

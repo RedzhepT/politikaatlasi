@@ -24,12 +24,22 @@ class ArticleController extends Controller
 
     private function cleanContent($content)
     {
-        // HTML etiketlerinden style özelliklerini temizle
+        // İzin verilen HTML etiketleri
+        $allowedTags = '<p><br><h1><h2><h3><h4><h5><h6><ul><ol><li><strong><em><u><s><blockquote><a><img><figure><figcaption>';
+        
+        // HTML özel karakterlerini decode et
+        $content = html_entity_decode($content, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        
+        // Önce tüm style özelliklerini temizle
         $content = preg_replace('/\s*style\s*=\s*"[^"]*"/', '', $content);
         
-        // Fazla boşlukları temizle
-        // $content = preg_replace('/\s+/', ' ', $content);
+        // İzin verilen etiketler dışındaki tüm HTML'i temizle
+        $content = strip_tags($content, $allowedTags);
         
+        // Fazla boşlukları temizle
+        $content = preg_replace('/\s+/', ' ', $content);
+        
+        // Başlık ve sondaki boşlukları temizle
         return trim($content);
     }
 
@@ -71,42 +81,40 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required',
-            'author' => 'required|string|max:255',
-            'category' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'content' => 'required',
+                'author' => 'required|string|max:255',
+                'category' => 'required|exists:categories,id',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
 
-        $imagePath = $this->handleImageUpload($request);
+            $imagePath = $this->handleImageUpload($request);
 
-        // Kategori işleme
-        $categoryName = $validated['category'];
-        if (is_string($categoryName) && $this->isJson($categoryName)) {
-            $categoryData = json_decode($categoryName, true);
-            $categoryName = $categoryData['name'] ?? $categoryName;
+            $article = new Article();
+            $article->title = $this->cleanTitle($validated['title']);
+            $article->content = $this->cleanContent($validated['content']);
+            $article->author_name = $validated['author'];
+            $article->category_id = $validated['category'];
+            $article->slug = Str::slug($validated['title']);
+            $article->is_published = $request->boolean('is_published', false);
+            $article->views = 0;
+            $article->image = $imagePath;
+
+            $article->save();
+
+            return redirect()->route('admin.articles.index')
+                ->with('success', 'Makale başarıyla kaydedildi.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Makale kaydedilirken bir hata oluştu: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $category = Category::firstOrCreate(
-            ['name' => $categoryName],
-            ['description' => $categoryName . ' kategorisindeki makaleler']
-        );
-
-        $article = new Article();
-        $article->title = $this->cleanTitle($validated['title']);
-        $article->content = $this->cleanContent($validated['content']);
-        $article->author_name = $validated['author'];
-        $article->category_id = $category->id;
-        $article->slug = Str::slug($validated['title']);
-        $article->is_published = false;
-        $article->views = 0;
-        $article->image = $imagePath;
-
-        $article->save();
-
-        return redirect()->route('admin.articles.index')
-            ->with('success', 'Makale başarıyla kaydedildi.');
     }
 
     public function edit(Article $article)
@@ -124,7 +132,7 @@ class ArticleController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required',
             'author' => 'required|string|max:255',
-            'category' => 'required',
+            'category' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -138,24 +146,12 @@ class ArticleController extends Controller
             $article->image = $imagePath;
         }
 
-        // Kategori işleme
-        $categoryName = $validated['category'];
-        if (is_string($categoryName) && $this->isJson($categoryName)) {
-            $categoryData = json_decode($categoryName, true);
-            $categoryName = $categoryData['name'] ?? $categoryName;
-        }
-
-        $category = Category::firstOrCreate(
-            ['name' => $categoryName],
-            ['description' => $categoryName . ' kategorisindeki makaleler']
-        );
-
         // Article güncelleme
         $article->title = $this->cleanTitle($validated['title']);
         $article->content = $this->cleanContent($validated['content']);
         $article->author_name = $validated['author'];
         $article->slug = Str::slug($validated['title']);
-        $article->category_id = $category->id;
+        $article->category_id = $validated['category'];
         $article->is_published = $request->boolean('is_published');
         
         $article->save();

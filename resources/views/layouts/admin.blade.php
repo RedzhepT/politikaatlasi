@@ -18,6 +18,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <!-- Admin CSS -->
     <link href="{{ asset('css/admin/layout.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin/forms.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin/modal.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin/editor.css') }}" rel="stylesheet">
     
     <style>
         :root {

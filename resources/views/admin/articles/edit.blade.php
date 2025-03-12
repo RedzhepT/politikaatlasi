@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="content-wrapper">
-    <form id="articleForm" action="{{ route('admin.articles.update', $article->id) }}" method="POST">
+    <form id="articleForm" action="{{ route('admin.articles.update', $article) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -47,8 +47,19 @@
                 <input type="hidden" name="title" id="hiddenTitle" value="{{ $article->title }}">
 
                 <div>Yazar</div>
-                <div class="editor-field single-line" contenteditable="true" id="author">{{ $article->author }}</div>
-                <input type="hidden" name="author" id="hiddenAuthor" value="{{ $article->author }}">
+                <div class="editor-field single-line" contenteditable="true" id="author">{{ $article->author_name }}</div>
+                <input type="hidden" name="author" id="hiddenAuthor" value="{{ $article->author_name }}">
+
+                <div>Görsel</div>
+                <div class="image-upload-field">
+                    @if($article->image)
+                        <div class="current-image mb-2">
+                            <img src="{{ asset($article->image) }}" alt="Mevcut görsel" class="img-preview">
+                        </div>
+                    @endif
+                    <input type="file" name="image" accept="image/*">
+                    <span class="text-muted">Desteklenen formatlar: JPEG, PNG, JPG, GIF (max. 2MB)</span>
+                </div>
 
                 <div>Kategori</div>
                 <div class="category-container">
@@ -65,8 +76,8 @@
                 </div>
 
                 <div>İçerik</div>
-                <div class="editor-field multi-line" contenteditable="true">{!! $article->content !!}</div>
-                <input type="hidden" name="content" id="hiddenContent" value="{{ $article->content }}">
+                <div class="editor-field multi-line" contenteditable="true" id="articleContent">{!! $article->content !!}</div>
+                <input type="hidden" name="content" id="hiddenContent" value="">
             </div>
 
             <div class="button-container">
@@ -85,7 +96,8 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Resim Yükle</h2>
-        <form id="imageUploadForm">
+        <form id="imageUploadForm" action="{{ route('admin.upload.image') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <input type="file" name="image" accept="image/*" required>
             <button type="submit">Yükle</button>
         </form>
@@ -99,12 +111,17 @@
 <script src="{{ asset('js/admin/modal.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // Sayfa yüklendiğinde içeriği hidden input'a aktar
+    const contentField = document.getElementById('articleContent');
+    if (contentField && document.getElementById('hiddenContent')) {
+        document.getElementById('hiddenContent').value = contentField.innerHTML;
+    }
+
     // Form submit öncesi içeriği güncelle
     document.getElementById('articleForm').addEventListener('submit', function(e) {
-        // Title, author ve content alanlarını güncelle
+        // Title ve author alanlarını güncelle
         const titleField = document.getElementById('title');
         const authorField = document.getElementById('author');
-        const contentField = document.getElementById('content');
         
         if (titleField && document.getElementById('hiddenTitle')) {
             document.getElementById('hiddenTitle').value = titleField.textContent;
@@ -115,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (contentField && document.getElementById('hiddenContent')) {
+            // İçeriği temizle ve sadece makale içeriğini al
             document.getElementById('hiddenContent').value = contentField.innerHTML;
         }
     });

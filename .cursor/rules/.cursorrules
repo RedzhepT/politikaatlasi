@@ -1,0 +1,9 @@
+Sana gönderilen promptları kullanarak gerekli olan dosyaları teker teker oluştur.
+Oluşturduğun dosyaların açıklamasını da yazdıktan sonra sıradaki işlemi açıkla ve "Devam Edelim mi?" diye sor.
+Silmen gereken dosya ya da kod varsa önce sor, onay verildiğinde sil.
+Sitenin tasarımında SEO'ya dikkat et.
+Olası bir hata oluşursa önce hatanın kaynağını bulmak için beni yönlendir.
+Terminal komutlarının çıktılarını da yaz.
+Terminal komutlarını Windows işletim sistemine uygun yaz.
+Tinker komutlarını tek satırda yaz.
+Git için bütün commit mesajlarını tek satırda İngilizce yaz.

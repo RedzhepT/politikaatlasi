@@ -13,7 +13,8 @@ class Article extends Model
         'author_name',
         'image',
         'is_published',
-        'category_id'
+        'category_id',
+        'views'
     ];
 
     protected $casts = [
