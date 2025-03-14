@@ -334,6 +334,11 @@
             opacity: 1;
         }
     </style>
+
+    <!-- Preload Critical Assets -->
+    <link rel="preload" as="image" href="{{ asset('assets/img/world-map.webp') }}" type="image/webp">
+    <link rel="preload" as="style" href="{{ asset('css/app.css') }}">
+    <link rel="preload" as="script" href="{{ asset('js/app.js') }}">
 </head>
 <body>
     @include('layouts.partials.header')
