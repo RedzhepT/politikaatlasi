@@ -13,7 +13,16 @@
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2">
-                <img src="{{ asset('assets/img/toppng.com-762x328.png') }}" class="img-fluid" alt="Dünya Haritası">
+                <picture>
+                    <source srcset="{{ asset('assets/img/world-map.webp') }}" type="image/webp">
+                    <source srcset="{{ asset('assets/img/world-map.png') }}" type="image/png">
+                    <img src="{{ asset('assets/img/world-map.png') }}" 
+                         class="img-fluid" 
+                         alt="Dünya Haritası"
+                         loading="lazy"
+                         width="762"
+                         height="328">
+                </picture>
             </div>
         </div>
     </div>
