@@ -50,9 +50,39 @@
                 <input type="hidden" name="author" id="hiddenAuthor" value="">
 
                 <div>Görsel</div>
-                <div class="image-upload-field">
-                    <input type="file" name="image" accept="image/*">
-                    <span class="text-muted">Desteklenen formatlar: JPEG, PNG, JPG, GIF (max. 2MB)</span>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Makale Görseli
+                    </label>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <input type="file" 
+                                   name="featured_image" 
+                                   id="featured_image"
+                                   accept="image/*"
+                                   class="hidden"
+                                   onchange="previewImage(this)">
+                            
+                            <label for="featured_image" 
+                                   class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded">
+                                Görsel Seç
+                            </label>
+                        </div>
+                        
+                        <!-- Görsel önizleme alanı -->
+                        <div id="image-preview" class="hidden">
+                            <img src="" alt="Önizleme" class="max-w-xs">
+                            <button type="button" onclick="removeImage()" 
+                                    class="mt-2 text-red-500">
+                                Görseli Kaldır
+                            </button>
+                        </div>
+                    </div>
+                    
+                    @error('featured_image')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>Kategori</div>
@@ -124,5 +154,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function previewImage(input) {
+    const preview = document.getElementById('image-preview');
+    const img = preview.querySelector('img');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            img.src = e.target.result;
+            preview.classList.remove('hidden');
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function removeImage() {
+    const input = document.getElementById('featured_image');
+    const preview = document.getElementById('image-preview');
+    
+    input.value = '';
+    preview.classList.add('hidden');
+}
 </script>
 @endsection 

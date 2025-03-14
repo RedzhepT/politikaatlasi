@@ -25,7 +25,7 @@
     <div class="section-header">
             <h2>Politika Atlası Hakkında</h2>
             <p>Politika Atlası ile siyasetin karmaşıklığını en aza indirerek herkesin politikayı daha iyi anlamasını sağlıyoruz. Makalelerle zenginleştirilmiş içeriğimizi sunarak tüm okuyucuların siyasi terimleri ve tanımlamaları öğrenmelerini hedefliyoruz. 
-Siyasi kavramların ve ideolojilerin farklılıklarını ortaya koyarak bunları okuyucuların dikkatine örneklerle sunuyoruz.  Politika Atlası’nı takip ederek, demokrasi, monarşi, cumhuriyet, otokrasi gibi farklı yönetim biçimlerini anlayabilir ve ayrıca, liberalizm, sosyalizm, muhafazakarlık gibi temel siyasi ideolojileri inceleyebilirsiniz. 
+Siyasi kavramların ve ideolojilerin farklılıklarını ortaya koyarak bunları okuyucuların dikkatine örneklerle sunuyoruz.  Politika Atlası'nı takip ederek, demokrasi, monarşi, cumhuriyet, otokrasi gibi farklı yönetim biçimlerini anlayabilir ve ayrıca, liberalizm, sosyalizm, muhafazakarlık gibi temel siyasi ideolojileri inceleyebilirsiniz. 
 Siyasi gelişmeleri ve olayları takip ederek sürekli güncellediğimiz içeriğimizle bilgilerinizi güncel tutabilir ve konuları farklı bakış açılarıyla değerlendirebilirsiniz.z</p>
         </div>
         <div class="section-header">
@@ -63,7 +63,7 @@ Siyasi gelişmeleri ve olayları takip ederek sürekli güncellediğimiz içeri�
 
         <div class="row gy-4">
             @forelse($articles as $article)
-                <div class="col-xl-6 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <article class="post-card">
                         <div class="post-img">
                             <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="img-fluid">

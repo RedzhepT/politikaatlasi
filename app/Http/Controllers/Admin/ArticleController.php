@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ImageService;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,6 +15,10 @@ use App\Models\Category;
 
 class ArticleController extends Controller
 {
+    public function __construct(
+        private readonly ImageService $imageService
+    ) {}
+
     private function cleanTitle($title)
     {
         // Önce tüm HTML etiketlerini temizle
@@ -81,38 +88,39 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'featured_image' => 'required|image|mimes:jpeg,png,jpg|max:5120', // 5MB limit
+        ]);
+
         try {
-            $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'content' => 'required',
-                'author' => 'required|string|max:255',
-                'category' => 'required|exists:categories,id',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            // Görsel işleme
+            $imageUrls = $this->imageService->optimizeAndStore(
+                $request->file('featured_image'),
+                'articles/images',
+                [
+                    'thumb' => [150, 150],   // Admin panel için küçük önizleme
+                    'small' => [400, 300],    // Mobil görünüm için
+                    'medium' => [800, 600],   // Tablet görünüm için
+                    'large' => [1200, 900],   // Desktop görünüm için
+                ]
+            );
+
+            // Makale oluşturma
+            $article = Article::create([
+                'title' => $validated['title'],
+                'content' => $validated['content'],
+                'featured_image' => json_encode($imageUrls),
             ]);
 
-            $imagePath = $this->handleImageUpload($request);
+            return redirect()
+                ->route('admin.articles.index')
+                ->with('success', 'Makale başarıyla oluşturuldu.');
 
-            $article = new Article();
-            $article->title = $this->cleanTitle($validated['title']);
-            $article->content = $this->cleanContent($validated['content']);
-            $article->author_name = $validated['author'];
-            $article->category_id = $validated['category'];
-            $article->slug = Str::slug($validated['title']);
-            $article->is_published = $request->boolean('is_published', false);
-            $article->views = 0;
-            $article->image = $imagePath;
-
-            $article->save();
-
-            return redirect()->route('admin.articles.index')
-                ->with('success', 'Makale başarıyla kaydedildi.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()
-                ->withErrors($e->errors())
-                ->withInput();
         } catch (\Exception $e) {
             return back()
-                ->with('error', 'Makale kaydedilirken bir hata oluştu: ' . $e->getMessage())
+                ->with('error', 'Görsel yüklenirken bir hata oluştu.')
                 ->withInput();
         }
     }

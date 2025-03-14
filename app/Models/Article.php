@@ -19,7 +19,7 @@ class Article extends Model
 
     protected $casts = [
         'is_published' => 'boolean',
-        'views' => 'integer'
+        'views' => 'integer',
     ];
 
     public function comments()
@@ -45,5 +45,12 @@ class Article extends Model
         
         // Varsayılan resim
         return asset('assets/img/default-article.jpg');
+    }
+
+    // Görsel URL'lerini almak için accessor
+    public function getFeaturedImageUrlAttribute($size = 'medium')
+    {
+        $images = is_array($this->image) ? $this->image : json_decode($this->image, true);
+        return $images[$size] ?? null;
     }
 } 
