@@ -17,26 +17,31 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return Cache::remember('home.page', 3600, function () {
-            $articles = Article::with('category')
-                ->where('is_published', true)
-                ->latest()
-                ->take(6)
-                ->get();
-
-            $categories = Category::withCount('articles')
-                ->orderByDesc('articles_count')
-                ->take(6)
-                ->get();
-
-            $stats = [
-                'articleCount' => Article::count(),
-                'categoryCount' => Category::count(),
-                'authorCount' => User::count(),
-                'viewCount' => Article::sum('views') ?? 0
+        // Cache the data instead of the view
+        $data = Cache::remember('home.data', 3600, function () {
+            return [
+                'articles' => Article::with('category')
+                    ->where('is_published', true)
+                    ->latest()
+                    ->take(6)
+                    ->get(),
+                'categories' => Category::withCount('articles')
+                    ->orderByDesc('articles_count')
+                    ->take(6)
+                    ->get(),
+                'stats' => [
+                    'articleCount' => Article::count(),
+                    'categoryCount' => Category::count(),
+                    'authorCount' => User::count(),
+                    'viewCount' => Article::sum('views') ?? 0
+                ]
             ];
-
-            return view('home', compact('articles', 'categories'))->with($stats);
         });
+
+        // Return the view with cached data
+        return view('home')
+            ->with('articles', $data['articles'])
+            ->with('categories', $data['categories'])
+            ->with($data['stats']);
     }
 }

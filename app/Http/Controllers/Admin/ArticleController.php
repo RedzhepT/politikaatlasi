@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class ArticleController extends Controller
 {
@@ -88,40 +90,87 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'featured_image' => 'required|image|mimes:jpeg,png,jpg|max:5120', // 5MB limit
-        ]);
-
         try {
-            // Görsel işleme
-            $imageUrls = $this->imageService->optimizeAndStore(
-                $request->file('featured_image'),
-                'articles/images',
-                [
-                    'thumb' => [150, 150],   // Admin panel için küçük önizleme
-                    'small' => [400, 300],    // Mobil görünüm için
-                    'medium' => [800, 600],   // Tablet görünüm için
-                    'large' => [1200, 900],   // Desktop görünüm için
-                ]
-            );
-
-            // Makale oluşturma
-            $article = Article::create([
-                'title' => $validated['title'],
-                'content' => $validated['content'],
-                'featured_image' => json_encode($imageUrls),
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|min:3|max:255',
+                'category_id' => 'required|exists:categories,id',
+                'content' => 'required|min:100',
+                'author' => 'required|string|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            ], [
+                'title.required' => 'Başlık alanı zorunludur.',
+                'title.min' => 'Başlık en az 3 karakter olmalıdır.',
+                'title.max' => 'Başlık en fazla 255 karakter olabilir.',
+                'category_id.required' => 'Kategori seçimi zorunludur.',
+                'category_id.exists' => 'Seçilen kategori geçerli değil.',
+                'content.required' => 'İçerik alanı zorunludur.',
+                'content.min' => 'İçerik en az 100 karakter olmalıdır.',
+                'author.required' => 'Yazar alanı zorunludur.',
+                'author.max' => 'Yazar adı en fazla 255 karakter olabilir.',
+                'image.image' => 'Yüklenen dosya bir görsel olmalıdır.',
+                'image.mimes' => 'Görsel JPEG, PNG, JPG, GIF veya WEBP formatında olmalıdır.',
+                'image.max' => 'Görsel boyutu en fazla 2MB olabilir.'
             ]);
 
-            return redirect()
-                ->route('admin.articles.index')
-                ->with('success', 'Makale başarıyla oluşturuldu.');
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $article = new Article();
+            $article->title = $request->title;
+            $article->slug = Str::slug($request->title);
+            $article->content = $request->content;
+            $article->category_id = $request->category_id;
+            $article->author_name = $request->author;
+            $article->is_published = $request->has('is_published');
+
+            // Görsel yükleme
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $filename = time() . '_' . $image->getClientOriginalName();
+                
+                // Görseli farklı boyutlarda kaydet
+                $sizes = [
+                    'small' => [300, 200],
+                    'medium' => [600, 400],
+                    'large' => [900, 600]
+                ];
+                
+                $imagePaths = [];
+                foreach ($sizes as $size => $dimensions) {
+                    $resizedImage = Image::make($image)
+                        ->fit($dimensions[0], $dimensions[1])
+                        ->encode('webp', 90);
+                    
+                    $path = 'articles/' . $size . '_' . $filename . '.webp';
+                    Storage::disk('public')->put($path, $resizedImage);
+                    $imagePaths[$size] = $path;
+                }
+                
+                // Orijinal görseli kaydet
+                $originalPath = 'articles/original_' . $filename . '.webp';
+                Storage::disk('public')->put($originalPath, Image::make($image)->encode('webp', 90));
+                $imagePaths['original'] = $originalPath;
+                
+                $article->image = $imagePaths;
+            }
+
+            $article->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Makale başarıyla kaydedildi.',
+                'redirect' => route('admin.articles.index')
+            ]);
 
         } catch (\Exception $e) {
-            return back()
-                ->with('error', 'Görsel yüklenirken bir hata oluştu.')
-                ->withInput();
+            return response()->json([
+                'success' => false,
+                'message' => 'Bir hata oluştu: ' . $e->getMessage()
+            ], 500);
         }
     }
 

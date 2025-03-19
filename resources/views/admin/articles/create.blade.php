@@ -6,10 +6,23 @@
 <link rel="stylesheet" href="{{ asset('css/admin/editor.css') }}">
 <link rel="stylesheet" href="{{ asset('css/admin/forms.css') }}">
 <link rel="stylesheet" href="{{ asset('css/admin/modal.css') }}">
+<style>
+    #errorAlert {
+        display: none;
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 4px;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+</style>
 @endsection
 
 @section('content')
 <div class="content-wrapper">
+    <div id="errorAlert"></div>
+    
     <form id="articleForm" action="{{ route('admin.articles.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -58,7 +71,7 @@
                     <div class="flex items-center gap-4">
                         <div class="relative">
                             <input type="file" 
-                                   name="featured_image" 
+                                   name="image" 
                                    id="featured_image"
                                    accept="image/*"
                                    class="hidden"
@@ -80,14 +93,14 @@
                         </div>
                     </div>
                     
-                    @error('featured_image')
+                    @error('image')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>Kategori</div>
                 <div class="category-container">
-                    <select name="category" class="editor-field single-line category-select">
+                    <select name="category_id" class="editor-field single-line category-select">
                         <option value="">Kategori Seçin</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -108,7 +121,7 @@
                     <input type="checkbox" class="form-check-input" id="is_published" name="is_published" value="1">
                     <label class="form-check-label" for="is_published">Yayınla</label>
                 </div>
-                <button type="submit" class="btn">Kaydet</button>
+                <button type="submit" class="btn" id="submitBtn">Kaydet</button>
             </div>
         </div>
     </form>
@@ -134,8 +147,14 @@
 <script src="{{ asset('js/admin/modal.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('articleForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorAlert = document.getElementById('errorAlert');
+
     // Form submit öncesi içeriği güncelle
-    document.getElementById('articleForm').addEventListener('submit', function(e) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
         // Title ve author alanlarını güncelle
         const titleField = document.getElementById('title');
         const authorField = document.getElementById('author');
@@ -152,6 +171,100 @@ document.addEventListener('DOMContentLoaded', () => {
         if (contentField && document.getElementById('hiddenContent')) {
             document.getElementById('hiddenContent').value = contentField.innerHTML;
         }
+
+        // Form verilerini hazırla
+        const formData = new FormData(this);
+        
+        // Debug: Form verilerini detaylı kontrol et
+        console.log('Form verileri detayı:');
+        formData.forEach((value, key) => {
+            console.log(`${key}:`, {
+                'değer': value,
+                'tip': typeof value,
+                'uzunluk': value.length
+            });
+        });
+        
+        // Zorunlu alanları kontrol et
+        const requiredFields = {
+            'title': 'Başlık',
+            'author': 'Yazar',
+            'category_id': 'Kategori',
+            'content': 'İçerik'
+        };
+        
+        let hasError = false;
+        Object.entries(requiredFields).forEach(([field, label]) => {
+            const value = formData.get(field);
+            if (!value || value.trim() === '') {
+                console.error(`${label} alanı boş:`, {field, value});
+                hasError = true;
+            }
+        });
+        
+        if (hasError) {
+            errorAlert.innerHTML = 'Lütfen tüm zorunlu alanları doldurun.';
+            errorAlert.style.display = 'block';
+            errorAlert.scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
+        
+        // Butonu devre dışı bırak
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
+        
+        // Hata mesajını gizle
+        errorAlert.style.display = 'none';
+        
+        // AJAX isteği gönder
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => {
+            console.log('HTTP Status:', response.status);
+            return response.json().then(data => ({
+                status: response.status,
+                data: data
+            }));
+        })
+        .then(({status, data}) => {
+            console.log('Response Data:', data);
+            
+            if (data.success) {
+                window.location.href = data.redirect;
+            } else {
+                errorAlert.innerHTML = '';
+                if (typeof data.errors === 'object') {
+                    console.log('Validation Errors:', data.errors);
+                    Object.values(data.errors).forEach(error => {
+                        errorAlert.innerHTML += `<div>${error}</div>`;
+                    });
+                } else {
+                    console.log('Error Message:', data.message);
+                    errorAlert.innerHTML = data.message || 'Bir hata oluştu';
+                }
+                errorAlert.style.display = 'block';
+                errorAlert.scrollIntoView({ behavior: 'smooth' });
+                
+                // Butonu tekrar aktif et
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Kaydet';
+            }
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            errorAlert.innerHTML = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+            errorAlert.style.display = 'block';
+            errorAlert.scrollIntoView({ behavior: 'smooth' });
+            
+            // Butonu tekrar aktif et
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Kaydet';
+        });
     });
 });
 

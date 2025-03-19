@@ -22,8 +22,6 @@
     <!-- Alternatif PNG favicon için -->
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     <title>@yield('title', 'Ülke Yönetim Biçimleri') | Politika Atlası</title>
     <meta name="description" content="@yield('meta_description', 'Dünya ülkelerinin yönetim sistemleri, siyasi yapıları ve devlet sistemleri hakkında detaylı bilgiler.')">
     <meta name="keywords" content="@yield('meta_keywords', 'yönetim sistemleri, siyasi sistemler, devlet yönetimi') @if(isset($article)), {{ $article->title }}@endif">
@@ -336,9 +334,26 @@
     </style>
 
     <!-- Preload Critical Assets -->
-    <link rel="preload" as="image" href="{{ asset('assets/img/world-map.webp') }}" type="image/webp">
-    <link rel="preload" as="style" href="{{ asset('css/app.css') }}">
-    <link rel="preload" as="script" href="{{ asset('js/app.js') }}">
+    <link rel="preload" href="{{ asset('assets/img/world-map.webp') }}" as="image" type="image/webp">
+    <link rel="preload" href="{{ asset('assets/css/main.css') }}" as="style">
+    <link rel="preload" href="{{ asset('assets/js/main.js') }}" as="script">
+    <link rel="preload" href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" as="style">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <!-- Vendor CSS Files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-icons.css') }}">
+    @yield('styles')
 </head>
 <body>
     @include('layouts.partials.header')
@@ -361,15 +376,15 @@
     <!-- Bootstrap Bundle (includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous" defer></script>
 
     <!-- Vendor JS Files -->
-    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}" defer></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}" defer></script>
+    <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}" defer></script>
 
     <!-- Template Main JS File -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}" defer></script>
     @yield('scripts')
 
     <script>
