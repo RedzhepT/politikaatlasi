@@ -13,31 +13,15 @@
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2">
-                @php
-                    $worldMapWebp = file_exists(public_path('uploads/articles/world-map.webp'));
-                    $worldMapPng = file_exists(public_path('uploads/articles/world-map.png'));
-                @endphp
-                
                 <picture>
-                    @if($worldMapWebp)
-                        <source srcset="{{ asset('uploads/articles/world-map.webp') }}" type="image/webp">
-                    @endif
-                    @if($worldMapPng)
-                        <source srcset="{{ asset('uploads/articles/world-map.png') }}" type="image/png">
-                        <img src="{{ asset('uploads/articles/world-map.png') }}" 
-                             class="img-fluid" 
-                             alt="Dünya Haritası"
-                             loading="lazy"
-                             width="762"
-                             height="328">
-                    @else
-                        <img src="{{ asset('uploads/articles/1737057317.png') }}" 
-                             class="img-fluid" 
-                             alt="Dünya Haritası"
-                             loading="lazy"
-                             width="762"
-                             height="328">
-                    @endif
+                    <source srcset="{{ asset('uploads/images/world-map.webp') }}" type="image/webp">
+                    <source srcset="{{ asset('uploads/images/world-map.png') }}" type="image/png">
+                    <img src="{{ asset('uploads/images/world-map.png') }}" 
+                         class="img-fluid" 
+                         alt="Dünya Haritası"
+                         loading="lazy"
+                         width="762"
+                         height="328">
                 </picture>
             </div>
         </div>
